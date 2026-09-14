@@ -1,10 +1,11 @@
-import type { CSSProperties } from "react";
+"use client";
 
-type PlaceholderImageProps = {
+import { motion, type HTMLMotionProps } from "framer-motion";
+
+type PlaceholderImageProps = HTMLMotionProps<"div"> & {
   label: string;
-  className?: string;
   gradient?: string;
-  style?: CSSProperties;
+  src?: string;
 };
 
 const DEFAULT_GRADIENT = "from-zinc-200 via-zinc-100 to-zinc-300";
@@ -13,16 +14,31 @@ export default function PlaceholderImage({
   label,
   className = "",
   gradient = DEFAULT_GRADIENT,
-  style,
+  src,
+  ...motionProps
 }: PlaceholderImageProps) {
   return (
-    <div
-      style={style}
-      className={`flex items-end overflow-hidden bg-gradient-to-br ${gradient} ${className}`}
+    <motion.div
+      className={`grid overflow-hidden ${src ? "bg-zinc-200" : `bg-gradient-to-br ${gradient}`} ${className}`}
+      {...motionProps}
     >
-      <span className="m-2 rounded-full bg-black/40 px-2 py-1 text-[10px] font-medium leading-none text-white backdrop-blur-sm">
-        {label}
-      </span>
-    </div>
+      {src ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt=""
+          className="h-full w-full object-cover"
+          style={{ gridArea: "1 / 1" }}
+        />
+      ) : null}
+      {label ? (
+        <span
+          className="m-2 w-fit self-end justify-self-start rounded-full bg-black/40 px-2 py-1 text-[10px] font-medium leading-none text-white backdrop-blur-sm"
+          style={{ gridArea: "1 / 1" }}
+        >
+          {label}
+        </span>
+      ) : null}
+    </motion.div>
   );
 }

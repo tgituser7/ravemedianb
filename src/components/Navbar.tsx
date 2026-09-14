@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Send, Play, User, Sun, Menu, X } from "lucide-react";
+import { EASE_OUT } from "@/lib/motion";
 
 const NAV_LINKS = [
   { label: "Get Started", badge: false },
@@ -12,37 +14,67 @@ const NAV_LINKS = [
   { label: "E-Commerce", badge: false },
 ];
 
+const LINK_STAGGER = 0.07;
+const LINKS_START = 0.25;
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const iconsDelay = LINKS_START + NAV_LINKS.length * LINK_STAGGER + 0.1;
 
   return (
-    <header className="sticky top-0 z-50">
+    <motion.header
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: EASE_OUT }}
+      className="sticky top-0 z-50"
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-5">
-        <a href="#" className="flex items-center gap-2">
+        <motion.a
+          href="#"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: EASE_OUT }}
+          className="flex items-center gap-2"
+        >
           <Send size={22} strokeWidth={0} fill="#5eead4" className="-rotate-12" />
           <span className="text-[15px] font-semibold tracking-tight text-neutral-900">
             Pallet Ross
           </span>
-        </a>
+        </motion.a>
 
         <nav className="hidden items-center gap-7 md:flex">
-          {NAV_LINKS.map(({ label, badge }) => (
-            <a
+          {NAV_LINKS.map(({ label, badge }, i) => (
+            <motion.a
               key={label}
               href="#"
-              className="flex items-center gap-2 text-[13px] font-medium text-neutral-700 transition-colors hover:text-neutral-900"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: LINKS_START + i * LINK_STAGGER,
+                ease: EASE_OUT,
+              }}
+              className="group flex items-center gap-2 text-[13px] font-medium text-neutral-700 transition-colors duration-200 hover:text-neutral-900"
             >
               {badge ? (
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-black">
                   <Play size={9} fill="white" strokeWidth={0} className="ml-px" />
                 </span>
               ) : null}
-              {label}
-            </a>
+              <span className="relative">
+                {label}
+                <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-neutral-900 transition-all duration-300 group-hover:w-full" />
+              </span>
+            </motion.a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: iconsDelay, ease: EASE_OUT }}
+          className="flex items-center gap-3"
+        >
           <button
             aria-label="Account"
             className="hidden h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-600 transition-colors hover:bg-neutral-50 sm:flex"
@@ -63,7 +95,7 @@ export default function Navbar() {
           >
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
-        </div>
+        </motion.div>
       </div>
 
       {open ? (
@@ -99,6 +131,6 @@ export default function Navbar() {
           </div>
         </nav>
       ) : null}
-    </header>
+    </motion.header>
   );
 }

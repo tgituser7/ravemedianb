@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { fadeUpInView } from "@/lib/motion";
 
 const LOGOS = ["Mercury", "Remote", "Miro", "Brex", "Databricks", "Linear", "Circus"];
 
@@ -13,7 +15,10 @@ export default function TrustedBy() {
   };
 
   return (
-    <section className="border-t border-zinc-100 px-6 py-16 lg:py-20">
+    <motion.section
+      {...fadeUpInView(0, 28, 0.7)}
+      className="border-t border-zinc-100 px-6 py-16 lg:py-20"
+    >
       <div className="mx-auto max-w-7xl">
         <div className="flex items-start justify-between gap-6">
           <div>
@@ -59,6 +64,6 @@ export default function TrustedBy() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

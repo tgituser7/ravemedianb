@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Play } from "lucide-react";
+import { fadeUpInView } from "@/lib/motion";
 
 function TwitterIcon() {
   return (
@@ -98,21 +102,16 @@ function FooterLinkList({
 }
 
 export default function Footer() {
+  const socialIcons = [TwitterIcon, InstagramIcon, DribbbleIcon];
+
   return (
-    <footer className="px-6 pb-10 pt-4">
+    <motion.footer {...fadeUpInView(0, 25, 0.7)} className="px-6 pb-10 pt-4">
       <div className="mx-auto max-w-7xl rounded-3xl bg-zinc-100 p-10 sm:p-14">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <div className="relative inline-block">
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-                Our platform, your art.
-              </h2>
-              <span className="absolute -right-20 -top-3 hidden items-center gap-1 rounded-2xl rounded-bl-sm bg-white px-3.5 py-2.5 shadow-sm sm:flex">
-                <span className="h-1 w-1 rounded-full bg-zinc-300" />
-                <span className="h-1 w-1 rounded-full bg-zinc-300" />
-                <span className="h-1 w-1 rounded-full bg-zinc-900" />
-              </span>
-            </div>
+            <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+              Our platform, your art.
+            </h2>
 
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">
               In the realm of Artnesia, creativity knows no bounds. This
@@ -120,7 +119,7 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 flex items-center gap-3">
-              {[TwitterIcon, InstagramIcon, DribbbleIcon].map((Icon, i) => (
+              {socialIcons.map((Icon, i) => (
                 <button
                   key={i}
                   aria-label="Social link"
@@ -149,6 +148,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
