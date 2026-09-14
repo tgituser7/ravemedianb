@@ -1,0 +1,104 @@
+"use client";
+
+import { useState } from "react";
+import { Send, Play, User, Sun, Menu, X } from "lucide-react";
+
+const NAV_LINKS = [
+  { label: "Get Started", badge: false },
+  { label: "Create strategy", badge: true },
+  { label: "Pricing", badge: false },
+  { label: "Contact", badge: false },
+  { label: "Solution", badge: false },
+  { label: "E-Commerce", badge: false },
+];
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-5">
+        <a href="#" className="flex items-center gap-2">
+          <Send size={22} strokeWidth={0} fill="#5eead4" className="-rotate-12" />
+          <span className="text-[15px] font-semibold tracking-tight text-neutral-900">
+            Pallet Ross
+          </span>
+        </a>
+
+        <nav className="hidden items-center gap-7 md:flex">
+          {NAV_LINKS.map(({ label, badge }) => (
+            <a
+              key={label}
+              href="#"
+              className="flex items-center gap-2 text-[13px] font-medium text-neutral-700 transition-colors hover:text-neutral-900"
+            >
+              {badge ? (
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-black">
+                  <Play size={9} fill="white" strokeWidth={0} className="ml-px" />
+                </span>
+              ) : null}
+              {label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <button
+            aria-label="Account"
+            className="hidden h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-600 transition-colors hover:bg-neutral-50 sm:flex"
+          >
+            <User size={16} />
+          </button>
+          <button
+            aria-label="Toggle theme"
+            className="hidden h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-600 transition-colors hover:bg-neutral-50 sm:flex"
+          >
+            <Sun size={16} />
+          </button>
+
+          <button
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((o) => !o)}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-700 md:hidden"
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </div>
+
+      {open ? (
+        <nav className="flex flex-col gap-1 border-t border-neutral-100 bg-white px-8 pb-6 pt-2 md:hidden">
+          {NAV_LINKS.map(({ label, badge }) => (
+            <a
+              key={label}
+              href="#"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 py-2.5 text-[14px] font-medium text-neutral-700 transition-colors hover:text-neutral-900"
+            >
+              {badge ? (
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-black">
+                  <Play size={9} fill="white" strokeWidth={0} className="ml-px" />
+                </span>
+              ) : null}
+              {label}
+            </a>
+          ))}
+          <div className="mt-2 flex items-center gap-3 sm:hidden">
+            <button
+              aria-label="Account"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-600"
+            >
+              <User size={16} />
+            </button>
+            <button
+              aria-label="Toggle theme"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-600"
+            >
+              <Sun size={16} />
+            </button>
+          </div>
+        </nav>
+      ) : null}
+    </header>
+  );
+}
