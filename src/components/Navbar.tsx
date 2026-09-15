@@ -27,7 +27,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
-      className="sticky top-0 z-50"
+      className="sticky top-0 z-50 border-b border-white/10 bg-white/60 backdrop-blur-lg backdrop-saturate-150 transition-colors duration-300"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-5">
         <motion.a

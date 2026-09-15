@@ -1,6 +1,5 @@
 import IntroLoader, { SPLASH_FADE_START_MS } from "@/components/IntroLoader";
 import Navbar from "@/components/Navbar";
-import ScrollBlurContent from "@/components/ScrollBlurContent";
 import ServicesShowcase from "@/components/ServicesShowcase";
 import BrandServices from "@/components/BrandServices";
 import LaptopShowcase from "@/components/LaptopShowcase";
@@ -14,13 +13,11 @@ export default function Home() {
       <IntroLoader />
       <Navbar entranceDelay={SPLASH_FADE_START_MS / 1000} />
       <main className="flex-1">
-        <ScrollBlurContent>
-          <HomeTop/>
-          <ServicesShowcase />
-          <BrandServices />
-          <LaptopShowcase />
-          <PricingSection />
-        </ScrollBlurContent>
+        <HomeTop/>
+        <ServicesShowcase />
+        <BrandServices />
+        <LaptopShowcase />
+        <PricingSection />
       </main>
       <Footer />
     </div>

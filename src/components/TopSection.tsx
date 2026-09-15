@@ -10,9 +10,9 @@ import { imageAt } from "@/lib/images";
 // finishes), so the hero eases in underneath while the wordmark is still
 // dissolving — a crossfade rather than a hard cut once the splash is gone.
 const BASE_DELAY = SPLASH_FADE_START_MS / 1000;
-const SCRAMBLE_SPEED = 32;
+const SCRAMBLE_SPEED = 55;
 
-const fadeUp = (delay: number, distance = 16, duration = 0.85) => ({
+const fadeUp = (delay: number, distance = 16, duration = 1.1) => ({
   initial: { opacity: 0, y: distance },
   animate: { opacity: 1, y: 0 },
   transition: { duration, delay, ease: EASE_OUT },
@@ -47,10 +47,8 @@ const HEADLINE_LINE_2 = "Timeless Brands.";
 export default function HomeTop() {
   return (
     <div className="forme-page">
-      {/* HEADER: the global Navbar, rendered in page.tsx outside
-          ScrollBlurContent (its sticky positioning breaks if it sits
-          inside ScrollBlurContent's filtered wrapper), timed to fade in
-          via its own entranceDelay prop. */}
+      {/* HEADER: the global Navbar, rendered in page.tsx, timed to fade
+          in via its own entranceDelay prop. */}
 
       {/* HERO */}
       <section className="hero">
@@ -85,9 +83,9 @@ export default function HomeTop() {
 
         {/* MAIN TITLE */}
         <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: BASE_DELAY + 0.05 }}
+          initial={{ opacity: 0, filter: "blur(10px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.3, delay: BASE_DELAY + 0.05, ease: EASE_OUT }}
         >
           <ScrambleLine text={HEADLINE_LINE_1} startDelay={BASE_DELAY + 0.05} />
           <br />
@@ -98,12 +96,12 @@ export default function HomeTop() {
         </motion.h1>
 
         {/* YEAR */}
-        <motion.div {...fadeUp(BASE_DELAY + 0.9, 10)} className="year">
+        <motion.div {...fadeUp(BASE_DELAY + 1.3, 10)} className="year">
           ©2025
         </motion.div>
 
         {/* DESCRIPTION */}
-        <motion.div {...fadeUp(BASE_DELAY + 0.95, 16)} className="description">
+        <motion.div {...fadeUp(BASE_DELAY + 1.4, 16)} className="description">
           <div className="globe">◎</div>
 
           <p>
@@ -120,7 +118,7 @@ export default function HomeTop() {
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: BASE_DELAY + 1.1, ease: EASE_OUT }}
+            transition={{ duration: 0.9, delay: BASE_DELAY + 1.5, ease: EASE_OUT }}
             className="image-card"
           >
             <img src={imageAt(0)} alt="" />
@@ -129,7 +127,7 @@ export default function HomeTop() {
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: BASE_DELAY + 1.25, ease: EASE_OUT }}
+            transition={{ duration: 0.9, delay: BASE_DELAY + 1.7, ease: EASE_OUT }}
             className="image-card"
           >
             <img src={imageAt(6)} alt="" />
@@ -138,15 +136,15 @@ export default function HomeTop() {
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: BASE_DELAY + 1.4, ease: EASE_OUT }}
+            transition={{ duration: 0.9, delay: BASE_DELAY + 1.9, ease: EASE_OUT }}
             className="collab-card"
           >
             <div className="arrow">↗</div>
 
             <span>
-              <ScrambleLine text="LET'S" startDelay={BASE_DELAY + 1.55} />
+              <ScrambleLine text="LET'S" startDelay={BASE_DELAY + 2.05} />
               <br />
-              <ScrambleLine text="COLLABORATE" startDelay={BASE_DELAY + 1.62} />
+              <ScrambleLine text="COLLABORATE" startDelay={BASE_DELAY + 2.15} />
             </span>
           </motion.div>
         </div>
@@ -157,7 +155,7 @@ export default function HomeTop() {
             key={cls}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: BASE_DELAY + 1.1 + i * 0.13, ease: EASE_OUT }}
+            transition={{ duration: 0.8, delay: BASE_DELAY + 1.5 + i * 0.15, ease: EASE_OUT }}
             className={`plus ${cls}`}
           >
             +
@@ -167,7 +165,7 @@ export default function HomeTop() {
 
       {/* BOTTOM TRUST BAR */}
       <section className="trust-bar">
-        <motion.div {...fadeUp(BASE_DELAY + 1.8, 10)} className="trust-caption">
+        <motion.div {...fadeUp(BASE_DELAY + 2.3, 10)} className="trust-caption">
           450+ COMPANY TRUST US
         </motion.div>
 
@@ -177,7 +175,7 @@ export default function HomeTop() {
               key={name}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: BASE_DELAY + 1.9 + i * 0.14, ease: EASE_OUT }}
+              transition={{ duration: 0.75, delay: BASE_DELAY + 2.4 + i * 0.16, ease: EASE_OUT }}
               className="brand"
             >
               <span className={`brand-icon ${cls}`}>{icon}</span>
@@ -186,7 +184,7 @@ export default function HomeTop() {
           ))}
         </div>
 
-        <motion.div {...fadeUp(BASE_DELAY + 2.7, 10)} className="scroll">
+        <motion.div {...fadeUp(BASE_DELAY + 3.3, 10)} className="scroll">
           ◉ SCROLL DOWN
         </motion.div>
       </section>

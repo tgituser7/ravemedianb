@@ -8,6 +8,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { EASE_OUT } from "@/lib/motion";
 
 const DESIGN_W = 1672;
 const DESIGN_H = 941;
@@ -218,7 +219,12 @@ function TestimonialSection() {
 
       <div className="mt-16 flex items-start gap-12">
         <div className="w-56 shrink-0">
-          <div className="aspect-[3/4] w-full rounded-md bg-gradient-to-br from-zinc-200 via-zinc-300 to-zinc-400" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/960x0.jpeg"
+            alt=""
+            className="aspect-[3/4] w-full rounded-md object-cover"
+          />
           <div className="mt-3 flex items-center justify-between text-[11px] uppercase tracking-wide text-zinc-400">
             <span>Happy Customer</span>
             <span>2025©</span>
@@ -347,7 +353,12 @@ function FullBleedReveal({
 
         <div className="mt-8 flex flex-col gap-8 sm:flex-row sm:items-start">
           <div className="w-40 shrink-0 sm:w-48">
-            <div className="aspect-[3/4] w-full rounded-md bg-gradient-to-br from-zinc-200 via-zinc-300 to-zinc-400" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/960x0.jpeg"
+              alt=""
+              className="aspect-[3/4] w-full rounded-md object-cover"
+            />
             <div className="mt-3 flex items-center justify-between text-[11px] uppercase tracking-wide text-zinc-400">
               <span>Happy Customer</span>
               <span>2025©</span>
@@ -460,8 +471,16 @@ export default function LaptopShowcase() {
       style={{ height: `${SCROLL_VH}vh` }}
     >
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden px-6">
-        <div
+        {/* Zoom-out entrance: the laptop starts noticeably enlarged and
+            settles down to its resting size as the section first scrolls
+            into view — separate from (and well before) the zoom-in that
+            happens at the end of the pin. */}
+        <motion.div
           ref={wrapRef}
+          initial={{ opacity: 0, scale: 1.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1.4, ease: EASE_OUT }}
           className="relative w-full max-w-5xl"
           style={{ aspectRatio: `${DESIGN_W} / ${DESIGN_H}` }}
         >
@@ -502,7 +521,7 @@ export default function LaptopShowcase() {
               </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <FullBleedReveal innerRef={revealRef} active={milestonesActive} />
       </div>
