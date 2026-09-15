@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Play, User, Sun, Menu, X } from "lucide-react";
+import { Play, User, Sun, Menu, X } from "lucide-react";
 import { EASE_OUT } from "@/lib/motion";
 
 const NAV_LINKS = [
   { label: "Home", href: "/", badge: false },
   { label: "Create strategy", href: "#", badge: true },
+  { label: "Project", href: "/project", badge: false },
   { label: "Pricing", href: "#", badge: false },
   { label: "Contact", href: "#", badge: false },
   { label: "Solution", href: "#", badge: false },
@@ -37,10 +38,8 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
           className="flex items-center gap-2"
         >
-          <Send size={22} strokeWidth={0} fill="#5eead4" className="-rotate-12" />
-          <span className="text-[15px] font-semibold tracking-tight text-neutral-900">
-            Rave Media
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="Rave" className="h-7 w-auto" />
         </motion.a>
 
         <nav className="hidden items-center gap-7 md:flex">

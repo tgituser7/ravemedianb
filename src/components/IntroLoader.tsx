@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { EASE_OUT } from "@/lib/motion";
 import { useScrambleText } from "@/lib/useScrambleText";
 
-const TARGET = "RAVE MEDIA";
+const TARGET = "RAVE";
 const SCRAMBLE_SPEED = 55;
 const HOLD_AFTER_REVEAL = 650;
 const MELT_DURATION = 4200;
