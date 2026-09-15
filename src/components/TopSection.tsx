@@ -190,6 +190,10 @@ export default function HomeTop() {
           ◉ SCROLL DOWN
         </motion.div>
       </section>
+
+      {/* Blends this section's black into the white section below it —
+          see .section1Fade in globals.css. */}
+      <div aria-hidden className="section1Fade" />
     </div>
   );
 }

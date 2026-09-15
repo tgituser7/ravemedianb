@@ -64,6 +64,7 @@ body {
 }
 
 .forme-page {
+  position: relative;
   min-height: 100vh;
   background:
     radial-gradient(
@@ -72,6 +73,24 @@ body {
       transparent 35%
     ),
     #050505;
+}
+
+/* Blends section 1's black into section 2's white. Starts exactly at
+   section 1's bottom edge and extends downward into section 2 only —
+   it must never overlap upward into section 1 itself, since (being a
+   later sibling with a higher z-index) it would sit in front of and
+   dim section 1's own content, like the trust-bar logos. */
+.section1Fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -200px;
+  height: 200px;
+
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* --------------------------------

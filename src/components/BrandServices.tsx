@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 import { ArrowUpRight, CornerDownRight } from "lucide-react";
 import PlaceholderImage from "./PlaceholderImage";
-import { EASE_OUT, fadeUpInView } from "@/lib/motion";
+import { EASE_OUT } from "@/lib/motion";
 
 const SERVICES = [
   "Branding & Identity",
@@ -20,6 +20,34 @@ const SERVICES = [
 
 const TAGS = ["Visual Identity", "Logo Systems", "Brand Guidelines"];
 const ACCENT = "#ed642b";
+
+// Same blur+fade+rise reveal used for section 2, fired once ~20% into view.
+const revealViewport = { once: true, amount: 0.2 } as const;
+const LIST_STAGGER = 0.13;
+
+const revealLine = (delay: number, distance = 24, duration = 0.7) => ({
+  initial: { opacity: 0, y: distance, filter: "blur(10px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: revealViewport,
+  transition: { duration, delay, ease: EASE_OUT },
+});
+
+// Images scale in rather than blur — no filter here.
+const revealImage = (delay: number, duration = 0.7) => ({
+  initial: { opacity: 0, scale: 0.4 },
+  whileInView: { opacity: 1, scale: 1 },
+  viewport: revealViewport,
+  transition: { duration, delay, ease: EASE_OUT },
+});
+
+// Small scale-pop for the tag pills, so they read as chips popping in
+// individually rather than blurring like the body text.
+const revealPop = (delay: number, duration = 0.4) => ({
+  initial: { opacity: 0, scale: 0.5 },
+  whileInView: { opacity: 1, scale: 1 },
+  viewport: revealViewport,
+  transition: { duration, delay, ease: EASE_OUT },
+});
 // The magnifier lens: a circular window that follows the cursor and shows
 // a scaled-up, inverted-color clone of the row underneath it — like a
 // loupe passing over the text.
@@ -137,9 +165,10 @@ export default function BrandServices() {
           {SERVICES.map((label, i) => {
             const isActive = i === active;
             return (
-              <li
+              <motion.li
                 key={label}
                 onPointerEnter={() => setActive(i)}
+                {...revealLine(i * LIST_STAGGER)}
                 className="relative border-b border-zinc-100 py-6 pl-8"
               >
                 {/* black underline that draws in under the active item */}
@@ -179,7 +208,7 @@ export default function BrandServices() {
                     </AnimatePresence>
                   </div>
                 </div>
-              </li>
+              </motion.li>
             );
           })}
         </ul>
@@ -187,32 +216,36 @@ export default function BrandServices() {
         {/* Right: static showcase panel */}
         <div>
           <motion.p
-            {...fadeUpInView(0.05, 12, 0.6)}
+            {...revealLine(0.05, 16, 0.6)}
             className="mb-10 text-right text-sm leading-relaxed text-zinc-500 sm:text-base"
           >
             We craft brand identities and digital experiences with
             <br className="hidden sm:block" /> precision, blending creativity and minimalism.
           </motion.p>
 
+          {/* Images scale up rather than blur, roughly in sync with the
+              heading/list — not waiting for the paragraph/tags below. */}
           <div className="grid grid-cols-2 gap-4 sm:gap-6">
-            <motion.div {...fadeUpInView(0.1, 24, 0.7)}>
+            <motion.div {...revealImage(0.15)}>
               <PlaceholderImage
                 label="STUDIO"
                 gradient="from-amber-900 via-stone-800 to-neutral-900"
+                src="/cstudio.jpeg"
                 className="aspect-[4/5] rounded-2xl"
               />
             </motion.div>
-            <motion.div {...fadeUpInView(0.18, 24, 0.7)} className="mt-8 sm:mt-12">
+            <motion.div {...revealImage(0.23)} className="mt-8 sm:mt-12">
               <PlaceholderImage
                 label="EDO"
                 gradient="from-zinc-100 via-zinc-200 to-stone-300"
+                src="/art_4.jpg"
                 className="aspect-[4/5] rounded-2xl"
               />
             </motion.div>
           </div>
 
           <motion.p
-            {...fadeUpInView(0.15, 16, 0.6)}
+            {...revealLine(0.55, 16, 0.6)}
             className="mt-10 max-w-xl text-sm leading-relaxed text-zinc-500 sm:text-base"
           >
             We design logos, identity systems, and brand guidelines that
@@ -221,22 +254,24 @@ export default function BrandServices() {
             across all platforms.
           </motion.p>
 
-          <motion.div
-            {...fadeUpInView(0.22, 12, 0.5)}
-            className="mt-6 flex flex-wrap items-center gap-3"
-          >
-            {TAGS.map((tag) => (
-              <span
+          {/* Tags resolve last, popping in individually. */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            {TAGS.map((tag, i) => (
+              <motion.span
                 key={tag}
+                {...revealPop(0.62 + i * 0.08)}
                 className="rounded-full border border-zinc-200 px-4 py-2 text-xs font-medium text-zinc-600"
               >
                 {tag}
-              </span>
+              </motion.span>
             ))}
-            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-500">
+            <motion.span
+              {...revealPop(0.62 + TAGS.length * 0.08)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-500"
+            >
               <ArrowUpRight size={16} />
-            </span>
-          </motion.div>
+            </motion.span>
+          </div>
         </div>
       </div>
     </section>

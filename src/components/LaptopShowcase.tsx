@@ -139,25 +139,25 @@ const PROJECTS = [
     title: "Sonnet Poster",
     desc: "A minimal poster series that explores the intersection of typography and emotion.",
     tags: ["Branding", "Poster"],
-    gradient: "from-zinc-200 via-zinc-300 to-zinc-400",
+    image: "/Frame-34.jpeg",
   },
   {
     title: "Earbuds Device App",
     desc: "A seamless mobile experience for modern sound and lifestyle.",
     tags: ["UI/UX", "Product Design"],
-    gradient: "from-indigo-950 via-slate-900 to-black",
+    image: "/div_imag.jpg",
   },
   {
     title: "Kinetica Logo",
     desc: "A modern brand identity inspired by analog precision.",
     tags: ["Branding & Identity"],
-    gradient: "from-stone-200 via-stone-300 to-stone-400",
+    image: "/cstudio.jpeg",
   },
   {
     title: "Fleespace Branding",
     desc: "Editorial packaging for a modern workspace brand.",
     tags: ["Branding", "Packaging"],
-    gradient: "from-zinc-700 via-zinc-800 to-black",
+    image: "/art_4.jpg",
   },
 ];
 
@@ -165,11 +165,16 @@ function ProjectCard({
   title,
   desc,
   tags,
-  gradient,
+  image,
 }: (typeof PROJECTS)[number]) {
   return (
     <div>
-      <div className={`aspect-[16/10] w-full rounded-md bg-gradient-to-br ${gradient}`} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={image}
+        alt={title}
+        className="aspect-[16/10] w-full rounded-md object-cover"
+      />
       <h3 className="mt-5 text-2xl font-semibold text-white">{title}</h3>
       <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-zinc-400">{desc}</p>
       <div className="mt-4 flex items-center gap-2">
@@ -307,6 +312,61 @@ function PricingTeaseSection() {
   );
 }
 
+// The laptop-internal sections above are authored at a fixed design width
+// (SCREEN_W) so they can sit inside the perspective-warped screen. Once the
+// zoom finishes and the laptop fades out, what's left needs to read as a
+// real, normal-width page section — not a small fixed box floating in the
+// middle of the viewport. This is a second, fully responsive copy of the
+// same content (testimonial + milestones + pricing heading) that crossfades
+// in at full section size as the laptop crossfades out.
+function FullBleedReveal({
+  innerRef,
+  active,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+  active: boolean;
+}) {
+  const years = useCountUp(5, active);
+  const projects = useCountUp(120, active);
+  const brands = useCountUp(50, active);
+  const returning = useCountUp(12, active);
+
+  return (
+    <div
+      ref={innerRef}
+      aria-hidden
+      className="pointer-events-none absolute inset-0 z-10 flex items-center overflow-y-auto bg-white opacity-0"
+    >
+      <div className="mx-auto w-full max-w-6xl px-6 py-24">
+        <span className="text-xs font-medium uppercase tracking-widest text-zinc-400">
+          [04] What Clients Say
+        </span>
+        <p className="mt-6 max-w-3xl text-2xl font-medium leading-snug text-zinc-900 sm:text-4xl">
+          &ldquo;They captured our vision with surprising clarity. The process
+          was simple, collaborative, and the result feels timeless.&rdquo;
+        </p>
+        <p className="mt-4 text-zinc-500">— Sarah C.</p>
+
+        <div className="mt-16 grid grid-cols-2 gap-10 border-t border-zinc-100 pt-16 sm:grid-cols-4">
+          <Stat value={years} suffix="+" label="Years Experience" />
+          <Stat value={projects} suffix="+" label="Projects Completed" />
+          <Stat value={brands} suffix="+" label="Brands Transformed" />
+          <Stat value={returning} suffix="%" label="Returning Clients" />
+        </div>
+
+        <div className="mt-16 border-t border-zinc-100 pt-16">
+          <span className="text-xs font-medium uppercase tracking-widest text-zinc-400">
+            [06] Pricing Plan
+          </span>
+          <h2 className="mt-6 max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-6xl">
+            Design, Scaled to Your Needs, Instantly Ready When You Are.
+          </h2>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function LaptopShowcase() {
   const [wrapRef, scale] = useDesignScale(DESIGN_W);
   const scrollRef = useRef<HTMLElement | null>(null);
@@ -314,6 +374,7 @@ export default function LaptopShowcase() {
   const milestonesRef = useRef<HTMLDivElement | null>(null);
   const screenRef = useRef<HTMLDivElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
+  const revealRef = useRef<HTMLDivElement | null>(null);
 
   const [maxScroll, setMaxScroll] = useState(1);
   const [milestonesTop, setMilestonesTop] = useState(Infinity);
@@ -372,6 +433,17 @@ export default function LaptopShowcase() {
     if (imgRef.current) {
       imgRef.current.style.opacity = String(1 - t);
     }
+    // Crossfade: the constrained laptop composition (bezel + design-width
+    // screen box) dissolves out while the full-bleed reveal — sized to the
+    // whole section, not the laptop's own aspect-locked box — fades in, so
+    // the end state actually fills the section's full width and height
+    // instead of settling into a smaller flattened rectangle mid-viewport.
+    if (wrapRef.current) {
+      wrapRef.current.style.opacity = String(1 - t);
+    }
+    if (revealRef.current) {
+      revealRef.current.style.opacity = String(t);
+    }
   });
 
   return (
@@ -424,6 +496,8 @@ export default function LaptopShowcase() {
             </div>
           </div>
         </div>
+
+        <FullBleedReveal innerRef={revealRef} active={milestonesActive} />
       </div>
     </section>
   );
