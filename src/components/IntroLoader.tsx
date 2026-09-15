@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { EASE_OUT } from "@/lib/motion";
 import { useScrambleText } from "@/lib/useScrambleText";
 
-const TARGET = "FORME";
+const TARGET = "RAVE MEDIA";
 const SCRAMBLE_SPEED = 55;
 const HOLD_AFTER_REVEAL = 650;
 const MELT_DURATION = 4200;
@@ -163,7 +163,7 @@ export default function IntroLoader() {
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="flex items-start text-5xl font-bold tracking-tight text-white sm:text-6xl"
+          className="flex items-start px-6 text-center text-4xl font-bold tracking-tight text-white sm:text-6xl"
         >
           <span ref={textRef} />
           <span className="ml-1 flex h-5 w-4 items-center justify-center rounded-full border border-white/70 text-[10px] font-semibold leading-none">

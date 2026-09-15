@@ -8,7 +8,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Pallet Ross",
+  title: "Rave Media",
   description: "A place to display your masterpiece.",
 };
 

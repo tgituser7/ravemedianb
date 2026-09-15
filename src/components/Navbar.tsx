@@ -6,7 +6,7 @@ import { Send, Play, User, Sun, Menu, X } from "lucide-react";
 import { EASE_OUT } from "@/lib/motion";
 
 const NAV_LINKS = [
-  { label: "Get Started", href: "#", badge: false },
+  { label: "Home", href: "/", badge: false },
   { label: "Create strategy", href: "#", badge: true },
   { label: "Pricing", href: "#", badge: false },
   { label: "Contact", href: "#", badge: false },
@@ -39,7 +39,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
         >
           <Send size={22} strokeWidth={0} fill="#5eead4" className="-rotate-12" />
           <span className="text-[15px] font-semibold tracking-tight text-neutral-900">
-            Pallet Ross
+            Rave Media
           </span>
         </motion.a>
 
