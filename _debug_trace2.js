@@ -1,0 +1,12 @@
+const { chromium } = require("playwright");
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 1440, height: 600 } });
+  await page.goto("http://localhost:3000", { waitUntil: "commit" });
+  await page.waitForTimeout(300);
+  const val = await page.evaluate(() => {
+    const el = document.querySelector('.font-mono');
+    return el ? getComputedStyle(el).opacity : "not-found";
+  });
+  console.log("opacity at 300ms:", val);
+})();

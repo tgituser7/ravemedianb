@@ -1,0 +1,362 @@
+.storySection {
+  position: relative;
+  width: 100%;
+  min-height: 1070px;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #8b8b8b 0px,
+      #d6d6d6 70px,
+      #eeeeee 145px,
+      #ffffff 250px
+    );
+
+  color: #050505;
+}
+
+
+/* --------------------------------
+   TOP LABEL
+-------------------------------- */
+
+.sectionLabel {
+  position: absolute;
+
+  top: 178px;
+  left: 35px;
+
+  display: flex;
+  align-items: center;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+
+  white-space: nowrap;
+}
+
+.sectionLabel span:first-child {
+  margin-right: 3px;
+}
+
+
+/* --------------------------------
+   MAIN HEADING
+-------------------------------- */
+
+.heading {
+  position: absolute;
+
+  top: 165px;
+  right: 6.2%;
+
+  width: 67.5%;
+
+  margin: 0;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: clamp(48px, 3.55vw, 58px);
+  line-height: 1.18;
+
+  font-weight: 500;
+  letter-spacing: -3.2px;
+
+  text-align: left;
+}
+
+
+/* --------------------------------
+   IMAGE
+-------------------------------- */
+
+.imageWrapper {
+  position: absolute;
+
+  top: 487px;
+  right: 0;
+
+  width: 65.4%;
+  height: 522px;
+
+  overflow: hidden;
+}
+
+.mainImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+
+/* --------------------------------
+   BARCODE
+-------------------------------- */
+
+.barcodeWrapper {
+  position: absolute;
+
+  top: 486px;
+  left: calc(34.7% - 27px);
+
+  height: 125px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.barcode {
+  width: 15px;
+  height: 76px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  overflow: hidden;
+}
+
+.barcode span {
+  display: block;
+
+  height: 2px;
+
+  background: #707070;
+}
+
+.copyright {
+  margin-top: 4px;
+
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+
+  color: #707070;
+}
+
+.year {
+  position: absolute;
+
+  top: 80px;
+  left: 4px;
+
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+
+  font-family: Arial, sans-serif;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  color: #707070;
+
+  white-space: nowrap;
+}
+
+
+/* --------------------------------
+   BOTTOM LEFT
+-------------------------------- */
+
+.bottomContent {
+  position: absolute;
+
+  left: 30px;
+  bottom: 84px;
+
+  width: 350px;
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+
+  margin-bottom: 17px;
+
+  font-size: 14px;
+  line-height: 1;
+}
+
+.stars span {
+  color: #111;
+}
+
+.stars .orange {
+  color: #e65b22;
+}
+
+.bottomContent p {
+  margin: 0;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 16px;
+  line-height: 1.55;
+
+  font-weight: 400;
+
+  letter-spacing: -0.2px;
+
+  color: #5e5e5e;
+}
+
+
+/* --------------------------------
+   SEE MORE
+-------------------------------- */
+
+.seeMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 30px;
+
+  color: #111;
+  text-decoration: none;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.arrow {
+  color: #ed642b;
+
+  font-size: 27px;
+  line-height: 0;
+
+  transform: translateY(-1px);
+
+  transition:
+    transform 0.3s ease;
+}
+
+.seeMore:hover .arrow {
+  transform: translate(5px, -1px);
+}
+
+
+/* --------------------------------
+   TABLET
+-------------------------------- */
+
+@media (max-width: 1100px) {
+  .storySection {
+    min-height: 900px;
+  }
+
+  .heading {
+    top: 150px;
+    right: 5%;
+
+    width: 70%;
+
+    font-size: 42px;
+    letter-spacing: -2.5px;
+  }
+
+  .imageWrapper {
+    top: 420px;
+
+    width: 65%;
+    height: 430px;
+  }
+
+  .barcodeWrapper {
+    top: 420px;
+  }
+
+  .bottomContent {
+    bottom: 60px;
+  }
+}
+
+
+/* --------------------------------
+   MOBILE
+-------------------------------- */
+
+@media (max-width: 700px) {
+  .storySection {
+    min-height: auto;
+
+    padding:
+      110px
+      20px
+      60px;
+
+    background:
+      linear-gradient(
+        to bottom,
+        #8b8b8b 0,
+        #eeeeee 100px,
+        #ffffff 210px
+      );
+  }
+
+  .sectionLabel {
+    position: relative;
+
+    top: auto;
+    left: auto;
+
+    margin-bottom: 30px;
+
+    font-size: 10px;
+  }
+
+  .heading {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    width: 100%;
+
+    font-size: clamp(35px, 9vw, 52px);
+    line-height: 1.08;
+
+    letter-spacing: -2px;
+  }
+
+  .imageWrapper {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    width: 100%;
+    height: 65vw;
+
+    margin-top: 80px;
+  }
+
+  .barcodeWrapper {
+    display: none;
+  }
+
+  .bottomContent {
+    position: relative;
+
+    left: auto;
+    bottom: auto;
+
+    width: 100%;
+
+    margin-top: 50px;
+  }
+
+  .bottomContent p {
+    font-size: 14px;
+  }
+}

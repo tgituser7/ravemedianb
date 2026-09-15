@@ -6,18 +6,19 @@ import { Send, Play, User, Sun, Menu, X } from "lucide-react";
 import { EASE_OUT } from "@/lib/motion";
 
 const NAV_LINKS = [
-  { label: "Get Started", badge: false },
-  { label: "Create strategy", badge: true },
-  { label: "Pricing", badge: false },
-  { label: "Contact", badge: false },
-  { label: "Solution", badge: false },
-  { label: "E-Commerce", badge: false },
+  { label: "Get Started", href: "#", badge: false },
+  { label: "Create strategy", href: "#", badge: true },
+  { label: "Pricing", href: "#", badge: false },
+  { label: "Contact", href: "#", badge: false },
+  { label: "Solution", href: "#", badge: false },
+  { label: "E-Commerce", href: "#", badge: false },
+  { label: "Network", href: "/network", badge: false },
 ];
 
 const LINK_STAGGER = 0.07;
 const LINKS_START = 0.25;
 
-export default function Navbar() {
+export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }) {
   const [open, setOpen] = useState(false);
   const iconsDelay = LINKS_START + NAV_LINKS.length * LINK_STAGGER + 0.1;
 
@@ -25,7 +26,7 @@ export default function Navbar() {
     <motion.header
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: EASE_OUT }}
+      transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
       className="sticky top-0 z-50"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-5">
@@ -33,7 +34,7 @@ export default function Navbar() {
           href="#"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: EASE_OUT }}
+          transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
           className="flex items-center gap-2"
         >
           <Send size={22} strokeWidth={0} fill="#5eead4" className="-rotate-12" />
@@ -43,15 +44,15 @@ export default function Navbar() {
         </motion.a>
 
         <nav className="hidden items-center gap-7 md:flex">
-          {NAV_LINKS.map(({ label, badge }, i) => (
+          {NAV_LINKS.map(({ label, href, badge }, i) => (
             <motion.a
               key={label}
-              href="#"
+              href={href}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
-                duration: 0.5,
-                delay: LINKS_START + i * LINK_STAGGER,
+                duration: 0.6,
+                delay: entranceDelay + LINKS_START + i * LINK_STAGGER,
                 ease: EASE_OUT,
               }}
               className="group flex items-center gap-2 text-[13px] font-medium text-neutral-700 transition-colors duration-200 hover:text-neutral-900"
@@ -72,7 +73,7 @@ export default function Navbar() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: iconsDelay, ease: EASE_OUT }}
+          transition={{ duration: 0.6, delay: entranceDelay + iconsDelay, ease: EASE_OUT }}
           className="flex items-center gap-3"
         >
           <button
@@ -100,10 +101,10 @@ export default function Navbar() {
 
       {open ? (
         <nav className="flex flex-col gap-1 border-t border-neutral-100 bg-white px-8 pb-6 pt-2 md:hidden">
-          {NAV_LINKS.map(({ label, badge }) => (
+          {NAV_LINKS.map(({ label, href, badge }) => (
             <a
               key={label}
-              href="#"
+              href={href}
               onClick={() => setOpen(false)}
               className="flex items-center gap-2 py-2.5 text-[14px] font-medium text-neutral-700 transition-colors hover:text-neutral-900"
             >
