@@ -317,8 +317,11 @@ function PricingTeaseSection() {
 // zoom finishes and the laptop fades out, what's left needs to read as a
 // real, normal-width page section — not a small fixed box floating in the
 // middle of the viewport. This is a second, fully responsive copy of the
-// same content (testimonial + milestones + pricing heading) that crossfades
-// in at full section size as the laptop crossfades out.
+// testimonial + milestones content that crossfades in at full section size
+// as the laptop crossfades out. It deliberately stops at the milestones —
+// it doesn't repeat the pricing heading, since the real PricingSection
+// (with that same heading) sits immediately after this one in the page
+// and repeating it here just reads as a duplicate, not a handoff.
 function FullBleedReveal({
   innerRef,
   active,
@@ -341,26 +344,30 @@ function FullBleedReveal({
         <span className="text-xs font-medium uppercase tracking-widest text-zinc-400">
           [04] What Clients Say
         </span>
-        <p className="mt-6 max-w-3xl text-2xl font-medium leading-snug text-zinc-900 sm:text-4xl">
-          &ldquo;They captured our vision with surprising clarity. The process
-          was simple, collaborative, and the result feels timeless.&rdquo;
-        </p>
-        <p className="mt-4 text-zinc-500">— Sarah C.</p>
+
+        <div className="mt-8 flex flex-col gap-8 sm:flex-row sm:items-start">
+          <div className="w-40 shrink-0 sm:w-48">
+            <div className="aspect-[3/4] w-full rounded-md bg-gradient-to-br from-zinc-200 via-zinc-300 to-zinc-400" />
+            <div className="mt-3 flex items-center justify-between text-[11px] uppercase tracking-wide text-zinc-400">
+              <span>Happy Customer</span>
+              <span>2025©</span>
+            </div>
+          </div>
+
+          <div>
+            <p className="max-w-3xl text-2xl font-medium leading-snug text-zinc-900 sm:text-4xl">
+              &ldquo;They captured our vision with surprising clarity. The process
+              was simple, collaborative, and the result feels timeless.&rdquo;
+            </p>
+            <p className="mt-4 text-zinc-500">— Sarah C.</p>
+          </div>
+        </div>
 
         <div className="mt-16 grid grid-cols-2 gap-10 border-t border-zinc-100 pt-16 sm:grid-cols-4">
           <Stat value={years} suffix="+" label="Years Experience" />
           <Stat value={projects} suffix="+" label="Projects Completed" />
           <Stat value={brands} suffix="+" label="Brands Transformed" />
           <Stat value={returning} suffix="%" label="Returning Clients" />
-        </div>
-
-        <div className="mt-16 border-t border-zinc-100 pt-16">
-          <span className="text-xs font-medium uppercase tracking-widest text-zinc-400">
-            [06] Pricing Plan
-          </span>
-          <h2 className="mt-6 max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-6xl">
-            Design, Scaled to Your Needs, Instantly Ready When You Are.
-          </h2>
         </div>
       </div>
     </div>
