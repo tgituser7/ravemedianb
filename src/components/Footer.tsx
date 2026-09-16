@@ -32,12 +32,11 @@ function DribbbleIcon() {
 }
 
 const PLATFORM_LINKS = [
-  { label: "Get Started" },
-  { label: "Create strategy", icon: true, badge: { text: "New", tone: "solid" as const } },
-  { label: "Pricing" },
-  { label: "Contact" },
-  { label: "Solution" },
-  { label: "E-Commerce" },
+  { label: "About", href: "/about" },
+  { label: "Divisions" },
+  { label: "News" },
+  { label: "Careers" },
+  { label: "Team" },
 ];
 
 const STORY_LINKS = [
@@ -77,14 +76,14 @@ function Badge({ text, tone }: { text: string; tone: "solid" | "soon" | "outline
 function FooterLinkList({
   links,
 }: {
-  links: { label: string; icon?: boolean; badge?: { text: string; tone: "solid" | "soon" | "outline" } }[];
+  links: { label: string; href?: string; icon?: boolean; badge?: { text: string; tone: "solid" | "soon" | "outline" } }[];
 }) {
   return (
     <ul className="flex flex-col gap-4">
-      {links.map(({ label, icon, badge }) => (
+      {links.map(({ label, href, icon, badge }) => (
         <li key={label}>
           <a
-            href="#"
+            href={href ?? "#"}
             className="flex items-center gap-2 text-sm font-medium text-zinc-900 transition-colors hover:text-zinc-600"
           >
             {icon ? (

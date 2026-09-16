@@ -2,7 +2,6 @@ import IntroLoader, { SPLASH_FADE_START_MS } from "@/components/IntroLoader";
 import Navbar from "@/components/Navbar";
 import ServicesShowcase from "@/components/ServicesShowcase";
 import BrandServices from "@/components/BrandServices";
-import LaptopShowcase from "@/components/LaptopShowcase";
 import PricingSection from "@/components/PricingSection";
 import Footer from "@/components/Footer";
 import HomeTop from "@/components/TopSection";
@@ -16,7 +15,6 @@ export default function Home() {
         <HomeTop/>
         <ServicesShowcase />
         <BrandServices />
-        <LaptopShowcase />
         <PricingSection />
       </main>
       <Footer />
