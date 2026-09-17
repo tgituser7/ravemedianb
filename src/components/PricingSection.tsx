@@ -101,7 +101,8 @@ function PlanCard({
         </div>
         <div className={`hidden items-center gap-2 sm:flex ${plan.dark ? "text-white/40" : "text-zinc-300"}`}>
           <span className="text-[10px] font-medium">
-            // {String(index + 1).padStart(2, "0")}-{String(total).padStart(2, "0")}
+            {"// "}
+            {String(index + 1).padStart(2, "0")}-{String(total).padStart(2, "0")}
           </span>
           <Barcode />
         </div>

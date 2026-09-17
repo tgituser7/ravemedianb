@@ -3,13 +3,12 @@
 import { motion } from "framer-motion";
 import { EASE_OUT } from "@/lib/motion";
 import { useScrambleText } from "@/lib/useScrambleText";
-import { SPLASH_FADE_START_MS } from "@/components/IntroLoader";
+import { SPLASH_DURATION_MS } from "@/components/SplashScreen";
 import { imageAt } from "@/lib/images";
 
-// Starts as soon as the splash's own fade-out begins (not after it fully
-// finishes), so the hero eases in underneath while the wordmark is still
-// dissolving — a crossfade rather than a hard cut once the splash is gone.
-const BASE_DELAY = SPLASH_FADE_START_MS / 1000;
+// Starts once the splash screen unmounts, so the hero eases in right as
+// it's gone rather than fighting it for the same screen space.
+const BASE_DELAY = SPLASH_DURATION_MS / 1000;
 const SCRAMBLE_SPEED = 55;
 
 const fadeUp = (delay: number, distance = 16, duration = 1.1) => ({

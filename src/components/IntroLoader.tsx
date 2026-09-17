@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { EASE_OUT } from "@/lib/motion";
 import { useScrambleText } from "@/lib/useScrambleText";
+import AppleSplash from "./SplashScreen";
 
 const TARGET = "RAVE";
 const SCRAMBLE_SPEED = 55;
@@ -78,7 +79,7 @@ export default function IntroLoader() {
   const [melting, setMelting] = useState(false);
   const [visible, setVisible] = useState(true);
   const { turbulenceRef, displaceRef } = useLiquidMelt(melting, MELT_DURATION);
-
+const [showSplash, setShowSplash] = useState(true);
   useEffect(() => {
     if (!done) return;
     const holdTimer = setTimeout(() => setMelting(true), HOLD_AFTER_REVEAL);
