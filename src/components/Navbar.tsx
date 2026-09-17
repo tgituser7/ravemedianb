@@ -6,10 +6,10 @@ import { motion } from "framer-motion";
 import { Play, Menu, X } from "lucide-react";
 import { EASE_OUT } from "@/lib/motion";
 
-function TwitterIcon({ size = 16 }: { size?: number }) {
+function YoutubeIcon({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23 4.5c-.8.36-1.66.6-2.56.71a4.48 4.48 0 0 0 1.96-2.48 8.94 8.94 0 0 1-2.83 1.08 4.45 4.45 0 0 0-7.58 4.06A12.63 12.63 0 0 1 2.9 3.15a4.44 4.44 0 0 0 1.38 5.94 4.4 4.4 0 0 1-2.01-.56v.06a4.45 4.45 0 0 0 3.57 4.36 4.46 4.46 0 0 1-2 .08 4.46 4.46 0 0 0 4.16 3.09A8.93 8.93 0 0 1 1 18.07a12.6 12.6 0 0 0 6.84 2c8.2 0 12.7-6.8 12.7-12.7l-.01-.58A9.1 9.1 0 0 0 23 4.5Z" />
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.95 1.97C5.12 19.5 12 19.5 12 19.5s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.97 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33ZM9.75 15.02V8.48l5.75 3.27-5.75 3.27Z" />
     </svg>
   );
 }
@@ -34,7 +34,7 @@ function DribbbleIcon({ size = 16 }: { size?: number }) {
 }
 
 const NAV_LINKS = [
-  { label: "Home", href: "/", badge: false },
+  { label: "Studio", href: "#", badge: false },
   { label: "About", href: "/about", badge: false },
   { label: "Create strategy", href: "#", badge: true },
   { label: "Project", href: "/project", badge: false },
@@ -44,9 +44,9 @@ const NAV_LINKS = [
 ];
 
 const SOCIAL_ICONS = [
-  { Icon: TwitterIcon, label: "Twitter" },
-  { Icon: InstagramIcon, label: "Instagram" },
-  { Icon: DribbbleIcon, label: "Dribbble" },
+  { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@RaveNetworkIndustries" },
+  { Icon: InstagramIcon, label: "Instagram", href: "#" },
+  { Icon: DribbbleIcon, label: "Dribbble", href: "#" },
 ];
 
 const LINK_STAGGER = 0.06;
@@ -134,10 +134,10 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
-          className="flex shrink-0 items-center gap-2"
+          className="flex shrink-0 items-center pr-4"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Rave" className="h-7 w-auto" />
+          <img src="/logo.png" alt="Rave" className="h-8 w-auto" />
         </motion.a>
 
         <span className={`hidden h-6 w-px shrink-0 md:block ${dividerColor}`} />
@@ -180,8 +180,15 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           className="ml-auto flex shrink-0 items-center gap-5"
         >
           <div className="hidden items-center gap-5 md:flex">
-            {SOCIAL_ICONS.map(({ Icon, label }) => (
-              <a key={label} href="#" aria-label={label} className={`transition-colors ${iconColor}`}>
+            {SOCIAL_ICONS.map(({ Icon, label, href }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                aria-label={label}
+                className={`transition-colors ${iconColor}`}
+              >
                 <Icon size={18} />
               </a>
             ))}
@@ -230,8 +237,15 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
             </a>
           ))}
           <div className="mt-3 flex items-center gap-4">
-            {SOCIAL_ICONS.map(({ Icon, label }) => (
-              <a key={label} href="#" aria-label={label} className={`transition-colors ${iconColor}`}>
+            {SOCIAL_ICONS.map(({ Icon, label, href }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                aria-label={label}
+                className={`transition-colors ${iconColor}`}
+              >
                 <Icon />
               </a>
             ))}

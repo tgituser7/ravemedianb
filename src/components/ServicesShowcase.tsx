@@ -95,12 +95,6 @@ export default function StorySection() {
 
       {/* Bottom left content: asterisks, body copy, "SEE MORE" */}
       <motion.div {...riseBlur(BODY_START)} className={styles.bottomContent}>
-        <div className={styles.stars}>
-          <span>✱</span>
-          <span>✱</span>
-          <span className={styles.orange}>✱</span>
-        </div>
-
         <p>
           We are a creative agency obsessed with clarity,
           <br />
