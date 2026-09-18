@@ -60,79 +60,40 @@ const REELS = [
   { index: "02", title: "Process Notes: Grid & Composition in Practice", duration: "04:08" },
 ];
 
-// Decorative "barcode" rail along the left edge — a dense run of black
-// bars up top thinning out to a mostly-cream run further down, echoing
-// the reference's vertical stripe column. Absolutely positioned against
-// this section only, so it never bleeds into the rest of the page.
-const RAIL_TOP_BARS = [
-  { w: 15, dark: true },
-  { w: 3, dark: false },
+// Decorative "barcode" rail along the left edge, modeled as a matrix:
+// the same irregular column widths (hairline/medium/wide bars, hand-set
+// rather than a repeating pattern) run through three stacked bands, and
+// a handful of columns get overridden to cream in specific bands —
+// that's what punches the "notch" breaks into an otherwise-solid bar,
+// rather than each band using an unrelated set of bar widths.
+const RAIL_CREAM = "#f0efea";
+
+const RAIL_COLUMNS: { w: number; dark: boolean }[] = [
   { w: 14, dark: true },
-  { w: 2, dark: false },
-  { w: 8, dark: true },
+  { w: 4, dark: false },
+  { w: 6, dark: true },
+  { w: 3, dark: false },
+  { w: 10, dark: true },
+  { w: 3, dark: false },
+  { w: 6, dark: true },
   { w: 3, dark: false },
   { w: 16, dark: true },
-  { w: 2, dark: false },
-  { w: 11, dark: true },
-  { w: 2, dark: false },
-  { w: 6, dark: true },
-  { w: 2, dark: false },
-  { w: 6, dark: true },
+  { w: 4, dark: false },
+  { w: 8, dark: true },
+  { w: 3, dark: false },
+  { w: 10, dark: true },
 ];
 
-// The cream run below isn't one continuous set of bars — it's broken
-// into a few shorter bands by plain horizontal cream gaps, with each
-// band's bars offset differently from the one above. That's what gives
-// it the "woven"/interrupted look instead of clean unbroken stripes.
-const RAIL_MID_BARS = [
-  { w: 24, dark: false },
-  { w: 2, dark: true },
-  { w: 18, dark: false },
-  { w: 3, dark: true },
-  { w: 28, dark: false },
-  { w: 2, dark: true },
-  { w: 13, dark: false },
-];
+// band index -> column index -> forced colour. Only the middle band
+// breaks a few of its bars to cream mid-height; top and bottom stay
+// mostly solid, per the reference.
+const RAIL_BAND_OVERRIDES: Record<number, Record<number, boolean>> = {
+  1: { 2: false, 6: false, 10: false },
+};
 
-const RAIL_LOWER_BARS = [
-  { w: 14, dark: false },
-  { w: 3, dark: true },
-  { w: 22, dark: false },
-  { w: 2, dark: true },
-  { w: 20, dark: false },
-  { w: 4, dark: true },
-  { w: 25, dark: false },
-];
-
-const RAIL_BASE_BARS = [
-  { w: 20, dark: false },
-  { w: 2, dark: true },
-  { w: 30, dark: false },
-  { w: 3, dark: true },
-  { w: 16, dark: false },
-  { w: 2, dark: true },
-  { w: 17, dark: false },
-];
-
-function RailBand({
-  bars,
-  className,
-}: {
-  bars: { w: number; dark: boolean }[];
-  className: string;
-}) {
-  return (
-    <div className={`flex w-full ${className}`}>
-      {bars.map((bar, i) => (
-        <div
-          key={i}
-          className={bar.dark ? "bg-neutral-950" : "bg-[#e7e4db]"}
-          style={{ width: bar.w }}
-        />
-      ))}
-    </div>
-  );
-}
+// One thin bar in the bottom band doesn't run the full band height —
+// it ends early, leaving cream beneath it near the rail's bottom edge.
+const RAIL_EARLY_END = { band: 2, column: 6, stopAt: "55%" };
 
 function BarcodeRail() {
   return (
@@ -140,18 +101,27 @@ function BarcodeRail() {
       aria-hidden
       className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden w-[90px] flex-col md:flex"
     >
-      {/* Short, dense black run up top... */}
-      <RailBand bars={RAIL_TOP_BARS} className="h-[18%]" />
-      {/* ...then plain cream breaks separating a few shorter,
-          differently-offset cream-dominant bands for the rest of the
-          rail, echoing the reference's white gaps above and mid-way
-          down its own stripe column. */}
-      <div className="h-[3%] w-full bg-[#e7e4db]" />
-      <RailBand bars={RAIL_MID_BARS} className="h-[27%]" />
-      <div className="h-[3%] w-full bg-[#e7e4db]" />
-      <RailBand bars={RAIL_LOWER_BARS} className="h-[27%]" />
-      <div className="h-[3%] w-full bg-[#e7e4db]" />
-      <RailBand bars={RAIL_BASE_BARS} className="h-[19%]" />
+      {[0, 1, 2].map((band) => (
+        <div key={band} className="flex h-1/3 w-full">
+          {RAIL_COLUMNS.map((col, i) => {
+            const override = RAIL_BAND_OVERRIDES[band]?.[i];
+            const dark = override ?? col.dark;
+            const earlyEnd = band === RAIL_EARLY_END.band && i === RAIL_EARLY_END.column;
+            return (
+              <div key={i} className="flex flex-col" style={{ width: col.w }}>
+                <div
+                  className={dark ? "bg-neutral-950" : ""}
+                  style={{
+                    height: earlyEnd ? RAIL_EARLY_END.stopAt : "100%",
+                    backgroundColor: dark ? undefined : RAIL_CREAM,
+                  }}
+                />
+                {earlyEnd ? <div className="flex-1" style={{ backgroundColor: RAIL_CREAM }} /> : null}
+              </div>
+            );
+          })}
+        </div>
+      ))}
     </div>
   );
 }
