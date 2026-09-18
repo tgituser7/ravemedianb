@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Play, Menu, X } from "lucide-react";
 import { EASE_OUT } from "@/lib/motion";
@@ -34,13 +33,9 @@ function DribbbleIcon({ size = 16 }: { size?: number }) {
 }
 
 const NAV_LINKS = [
-  { label: "Studio", href: "#", badge: false },
   { label: "About", href: "/about", badge: false },
-  { label: "Create strategy", href: "#", badge: true },
-  { label: "Project", href: "/project", badge: false },
-  { label: "Pricing", href: "#", badge: false },
-  { label: "Contact", href: "#", badge: false },
   { label: "Network", href: "/network", badge: false },
+  { label: "Studio", href: "/studio", badge: false },
 ];
 
 const SOCIAL_ICONS = [
@@ -57,14 +52,14 @@ const SCROLL_THRESHOLD = 40;
 export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }) {
   const [open, setOpen] = useState(false);
   const iconsDelay = LINKS_START + NAV_LINKS.length * LINK_STAGGER + 0.1;
-  const isHome = usePathname() === "/";
 
-  const linkColor = isHome ? "text-white/85 hover:text-white" : "text-neutral-900/90 hover:text-neutral-900";
-  const underlineColor = isHome ? "bg-white" : "bg-neutral-900";
-  const dividerColor = isHome ? "bg-white/15" : "bg-neutral-400/60";
-  const iconColor = isHome ? "text-white/70 hover:text-white" : "text-neutral-800 hover:text-neutral-950";
-  const badgeBg = isHome ? "bg-white" : "bg-black";
-  const badgeFill = isHome ? "black" : "white";
+  // Same look on every route, including home — no more black bar there.
+  const linkColor = "text-neutral-900/90 hover:text-neutral-900";
+  const underlineColor = "bg-neutral-900";
+  const dividerColor = "bg-neutral-400/60";
+  const iconColor = "text-neutral-800 hover:text-neutral-950";
+  const badgeBg = "bg-black";
+  const badgeFill = "white";
 
   // Shrinks into a floating, rounded "capsule" once the page scrolls past
   // SCROLL_THRESHOLD, and expands back to the full-width bar at the top —
@@ -113,7 +108,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
         animate={{
           marginTop: scrolled ? 12 : 0,
           width: scrolled ? "94%" : "100%",
-          maxWidth: scrolled ? 1024 : 1600,
+          maxWidth: scrolled ? 1140 : 1600,
           borderRadius: scrolled ? 9999 : 0,
           paddingLeft: scrolled ? 24 : 32,
           paddingRight: scrolled ? 24 : 32,
@@ -124,26 +119,26 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
             : "0 0 0 0 rgba(0,0,0,0)",
         }}
         transition={{ duration: 0.45, ease: EASE_OUT }}
-        className={`flex items-center gap-6 transition-colors duration-300 ${
-          isHome ? "bg-black" : "bg-[#eae8e2]"
-        }`}
+        className="flex items-center gap-6 bg-[#eae8e2] transition-colors duration-300"
       >
-        {/* Logo */}
+        {/* Logo — back on the left like before, but shifted toward the
+            right side of its own slot (left edge to the small divider
+            bar) instead of sitting flush against the edge. */}
         <motion.a
           href="/"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
-          className="flex shrink-0 items-center pr-4"
+          className="flex w-[104px] shrink-0 items-center justify-end pr-6"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Rave" className="h-8 w-auto" />
+          <img src="/logo.png" alt="Rave" className="h-6 w-auto" />
         </motion.a>
 
         <span className={`hidden h-6 w-px shrink-0 md:block ${dividerColor}`} />
 
         {/* Nav links */}
-        <nav className="hidden flex-1 items-center gap-8 md:flex">
+        <nav className="hidden flex-1 items-center gap-5 md:flex lg:gap-6">
           {NAV_LINKS.map(({ label, href, badge }, i) => (
             <motion.a
               key={label}
@@ -206,9 +201,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           <button
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((o) => !o)}
-            className={`flex h-9 w-9 items-center justify-center rounded-full border md:hidden ${
-              isHome ? "border-white/20 text-white" : "border-neutral-400/60 text-neutral-900"
-            }`}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-400/60 text-neutral-900 md:hidden"
           >
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
@@ -217,9 +210,9 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
 
       {open ? (
         <nav
-          className={`flex flex-col gap-1 border-t px-8 pb-6 pt-2 transition-all duration-300 md:hidden ${
-            isHome ? "border-white/10 bg-black" : "border-neutral-300/60 bg-[#eae8e2]"
-          } ${scrolled ? "w-[94%] max-w-5xl rounded-b-3xl shadow-xl shadow-black/10" : "w-full"}`}
+          className={`flex flex-col gap-1 border-t border-neutral-300/60 bg-[#eae8e2] px-8 pb-6 pt-2 transition-all duration-300 md:hidden ${
+            scrolled ? "w-[94%] max-w-5xl rounded-b-3xl shadow-xl shadow-black/10" : "w-full"
+          }`}
         >
           {NAV_LINKS.map(({ label, href, badge }) => (
             <a
