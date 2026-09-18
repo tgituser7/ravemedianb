@@ -34,6 +34,7 @@ function DribbbleIcon({ size = 16 }: { size?: number }) {
 
 const NAV_LINKS = [
   { label: "About", href: "/about", badge: false },
+  { label: "Project", href: "/project", badge: false },
   { label: "Network", href: "/network", badge: false },
   { label: "Studio", href: "/studio", badge: false },
 ];
@@ -107,7 +108,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
       <motion.div
         animate={{
           marginTop: scrolled ? 12 : 0,
-          width: scrolled ? "94%" : "100%",
+          width: scrolled ? "auto" : "100%",
           maxWidth: scrolled ? 1140 : 1600,
           borderRadius: scrolled ? 9999 : 0,
           paddingLeft: scrolled ? 24 : 32,
@@ -129,16 +130,23 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
-          className="flex w-[104px] shrink-0 items-center justify-end pr-6"
+          className="flex w-[80px] shrink-0 items-center justify-end pr-0"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Rave" className="h-6 w-auto" />
+          <img src="/logo.png" alt="Rave" className="h-7 w-auto" />
         </motion.a>
 
         <span className={`hidden h-6 w-px shrink-0 md:block ${dividerColor}`} />
 
-        {/* Nav links */}
-        <nav className="hidden flex-1 items-center gap-5 md:flex lg:gap-6">
+        {/* Nav links + social/CTA group share this wrapper so the gap
+            between them can be pinned to a fixed ~2rem once scrolled,
+            instead of the spread-apart, fill-the-bar spacing used at
+            the top of the page. */}
+        <div
+          className={`flex flex-1 items-center ${scrolled ? "" : "justify-between"}`}
+          style={scrolled ? { gap: "2rem" } : undefined}
+        >
+        <nav className="hidden items-center gap-5 md:flex lg:gap-6">
           {NAV_LINKS.map(({ label, href, badge }, i) => (
             <motion.a
               key={label}
@@ -172,7 +180,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: entranceDelay + iconsDelay, ease: EASE_OUT }}
-          className="ml-auto flex shrink-0 items-center gap-5"
+          className="flex shrink-0 items-center gap-5"
         >
           <div className="hidden items-center gap-5 md:flex">
             {SOCIAL_ICONS.map(({ Icon, label, href }) => (
@@ -206,6 +214,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
         </motion.div>
+        </div>
       </motion.div>
 
       {open ? (
