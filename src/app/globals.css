@@ -1335,3 +1335,69 @@ a {
   }
 }
 
+
+/* Studio mosaic (third section on /studio) */
+.project_mosaic {
+  background: #fff;
+  padding: 24px 0 64px;
+}
+.project_vspan {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: min(94vw, 1300px);
+  aspect-ratio: 1300 / 880;
+  margin-top: 0;
+  background: #f4f2ec;
+}
+.sectors-images {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #e9e7e1;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+.sectors-accent-yellow {
+  background: #fed500;
+}
+.sectors-accent-black {
+  background: #0a0a0a;
+}
+.sectors-images .advideo,
+.sectors-images .project_img {
+  display: block;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+.sectors-images:hover .advideo,
+.sectors-images:hover .project_img {
+  transform: scale(1.04);
+}
+.ad_video_full,
+.p_img {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.88);
+}
+.ad_video_full .col-6,
+.p_img .col-6 {
+  width: min(61rem, 92vw);
+  max-height: 80vh;
+}
+.lightbox_bar {
+  width: min(61rem, 92vw);
+  text-align: end;
+  color: #fff;
+}
+@media (max-width: 640px) {
+  .project_vspan {
+    aspect-ratio: 4 / 5;
+  }
+}
