@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 // quote body, an author (initials avatar, name, role), a star rating, and
 // a "01/03" counter with a single forward arrow to advance. Fictional
 // authors only — no real names or photos are used.
-
+ 
 const TICKER = ["$799.00", "NOW AVAILABLE", "DEVICE", "NEW VERSION"];
 
 const TESTIMONIALS = [
