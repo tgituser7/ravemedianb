@@ -50,6 +50,11 @@ const MAX_SPEED = 0.16; // ceiling, in progress per second
 // second) instead; the progress cap below is derived from it per segment.
 const MAX_VISIBLE_SPEED = 420;
 
+// Over the wall the page itself scrolls slowly: wheel / touch input is scaled
+// down and eased, so the same swipe moves the page a fraction as far.
+const SCROLL_FACTOR = 0.3; // 1 = normal scroll speed
+const SCROLL_EASE = 0.1; // 0..1, lower = softer, longer glide
+
 type WallCard = { x: number; el: ReactNode };
 
 const ROWS: { k: number; cards: WallCard[] }[] = [
@@ -176,6 +181,80 @@ export default function StudioWall() {
   }, [size]);
 
   const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start start", "end end"] });
+
+  // Slow, eased page scroll while the wall is on screen.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    let target = window.scrollY;
+    let y = target;
+    let lastSet = -1;
+    let frame: number | null = null;
+
+    const maxY = () => document.documentElement.scrollHeight - window.innerHeight;
+    const inZone = () => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4;
+    };
+
+    const loop = () => {
+      // Something else (scrollbar drag, keyboard, anchor) moved the page: yield to it.
+      if (lastSet >= 0 && Math.abs(window.scrollY - lastSet) > 2) {
+        frame = null;
+        lastSet = -1;
+        return;
+      }
+      y += (target - y) * SCROLL_EASE;
+      if (Math.abs(target - y) < 0.5) y = target;
+      lastSet = y;
+      window.scrollTo(0, y);
+      if (y === target) {
+        frame = null;
+        lastSet = -1;
+        return;
+      }
+      frame = requestAnimationFrame(loop);
+    };
+
+    const push = (delta: number) => {
+      if (frame === null) {
+        target = window.scrollY;
+        y = target;
+      }
+      target = Math.max(0, Math.min(maxY(), target + delta * SCROLL_FACTOR));
+      if (frame === null) frame = requestAnimationFrame(loop);
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX) || !inZone()) return;
+      e.preventDefault();
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
+      push(e.deltaY * unit);
+    };
+
+    let lastTouchY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      lastTouchY = e.touches[0]?.clientY ?? 0;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 1 || !inZone()) return;
+      const cy = e.touches[0].clientY;
+      const dy = lastTouchY - cy;
+      lastTouchY = cy;
+      if (e.cancelable) e.preventDefault();
+      push(dy);
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
+  }, []);
 
   const reduced = useReducedMotion();
   const glide = useMotionValue(scrollYProgress.get());
