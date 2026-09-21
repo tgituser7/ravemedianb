@@ -39,12 +39,6 @@ export const MILESTONES: Milestone[] = [
     image: "/Recording Studio.jpeg",
   },
   {
-    year: "2019",
-    title: "Chroma space",
-    text: "An air-conditioned, sound-proof green screen stage for effects work, virtual sets and clean keying.",
-    image: "/cstudio.jpeg",
-  },
-  {
     year: "2021",
     title: "Makeup and green room",
     text: "Natural window light and pro vanity lighting, so talent arrives on set camera-ready and unhurried.",

@@ -222,89 +222,95 @@ export default function AboutTimeline() {
           </div>
         </motion.div>
 
-        {/* Year rail */}
+        {/* Chapter filmstrip: a connected track of photo cards. The active
+            year expands, the rest collapse to a slim year tab. */}
         <motion.div {...fadeUpInView(0.15, 24, 0.8)} className="relative mt-10">
           <div
             ref={railRef}
             role="tablist"
             aria-label="Timeline years"
             onKeyDown={onKey}
-            className="overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            <div className="relative mx-auto min-w-[820px] px-8">
-              {/* axis with arrow heads */}
-              <div className="absolute left-2 right-2 top-[31px] h-[3px] rounded-full bg-zinc-800" />
-              <span
-                aria-hidden
-                className="absolute left-0 top-[16px] h-[33px] w-[26px] bg-zinc-800"
-                style={{ clipPath: "polygon(100% 0, 0 50%, 100% 100%)" }}
-              />
-              <span
-                aria-hidden
-                className="absolute right-0 top-[16px] h-[33px] w-[26px] bg-zinc-800"
-                style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
-              />
-              {/* progress fill */}
-              <div className="absolute inset-x-8 top-[31px] h-[3px]">
-                <div className="absolute inset-y-0 left-[calc(50%/9)] right-[calc(50%/9)]">
-                  <motion.div
-                    className="h-full origin-left rounded-full"
-                    style={{ background: "#ff4b08" }}
-                    initial={false}
-                    animate={{ scaleX: active / (N - 1) }}
-                    transition={{ duration: 0.9, ease: EASE_OUT }}
-                  />
-                </div>
-              </div>
+            <div className="flex min-w-[760px] gap-3">
+              {MILESTONES.map((item, i) => {
+                const on = i === active;
+                const past = i < active;
+                return (
+                  <button
+                    key={item.year}
+                    type="button"
+                    role="tab"
+                    data-i={i}
+                    aria-selected={on}
+                    aria-label={`${item.year}: ${item.title}`}
+                    tabIndex={on ? 0 : -1}
+                    onClick={() => go(i)}
+                    className={`group relative flex basis-0 flex-col text-left outline-none transition-[flex-grow] duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      on ? "min-w-[230px] grow-[5]" : "min-w-[68px] grow"
+                    }`}
+                  >
+                    {/* track: hairline + node, fills orange up to the active year */}
+                    <span aria-hidden className="relative block h-6 w-full">
+                      <span className={`absolute left-0 top-[11px] h-[2px] rounded-full bg-zinc-900/15 ${i === N - 1 ? "right-0" : "-right-3"}`} />
+                      <motion.span
+                        className={`absolute left-0 top-[11px] h-[2px] origin-left rounded-full ${i === N - 1 ? "right-0" : "-right-3"}`}
+                        style={{ background: "#ff4b08" }}
+                        initial={false}
+                        animate={{ scaleX: past ? 1 : 0 }}
+                        transition={{ duration: 0.7, ease: EASE_OUT }}
+                      />
+                      <motion.span
+                        className="absolute left-0 top-[5px] block rounded-full border-2"
+                        initial={false}
+                        animate={{
+                          width: on ? 16 : 10,
+                          height: on ? 16 : 10,
+                          y: on ? -1 : 2,
+                          backgroundColor: on || past ? "#ff4b08" : "#eae8e2",
+                          borderColor: on || past ? "#ff4b08" : "rgba(24,24,27,0.35)",
+                          boxShadow: on ? "0 0 0 6px rgba(255,75,8,0.18)" : "0 0 0 0px rgba(255,75,8,0)",
+                        }}
+                        transition={{ duration: 0.5, ease: EASE_OUT }}
+                      />
+                    </span>
 
-              <div className="relative grid" style={{ gridTemplateColumns: `repeat(${N}, minmax(0, 1fr))` }}>
-                {MILESTONES.map((item, i) => {
-                  const on = i === active;
-                  const past = i < active;
-                  return (
-                    <button
-                      key={item.year}
-                      type="button"
-                      role="tab"
-                      data-i={i}
-                      aria-selected={on}
-                      aria-label={`${item.year}: ${item.title}`}
-                      tabIndex={on ? 0 : -1}
-                      onClick={() => go(i)}
-                      className="group flex flex-col items-center outline-none"
-                    >
-                      <span aria-hidden className="relative block h-[64px] w-full">
-                        <motion.span
-                          className="absolute left-[calc(50%-1.5px)] top-0 block w-[3px] rounded-full"
-                          initial={false}
-                          animate={{
-                            height: on ? 52 : 34,
-                            top: on ? 5 : 14,
-                            backgroundColor: on || past ? "#ff4b08" : "#27272a",
-                          }}
-                          transition={{ duration: 0.45, ease: EASE_OUT }}
-                        />
-                      </span>
-                      <span className="relative flex h-11 items-center justify-center px-3">
-                        {on ? (
-                          <motion.span
-                            layoutId="year-pill"
-                            className="absolute inset-0 rounded-md bg-black"
-                            transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                          />
-                        ) : null}
+                    {/* card */}
+                    <span className="relative mt-2 block h-[124px] w-full overflow-hidden rounded-2xl bg-zinc-900 sm:h-[148px]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.image}
+                        alt=""
+                        draggable={false}
+                        className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
+                          on ? "scale-100 grayscale-0" : "scale-110 grayscale group-hover:grayscale-0"
+                        }`}
+                      />
+                      <span
+                        className={`absolute inset-0 transition-opacity duration-700 ${
+                          on ? "opacity-100" : "opacity-100 group-hover:opacity-70"
+                        } bg-gradient-to-t from-black/85 via-black/35 to-black/20`}
+                      />
+                      <span className="absolute inset-x-0 bottom-0 flex flex-col p-3 sm:p-4">
                         <span
-                          className={`relative text-[15px] font-semibold tabular-nums transition-colors ${
-                            on ? "text-white" : "text-zinc-700 group-hover:text-zinc-950"
+                          className={`font-black leading-none tracking-tight text-white tabular-nums transition-all duration-700 ${
+                            on ? "text-[34px] sm:text-[42px]" : "text-[15px] sm:text-[16px]"
                           }`}
                         >
                           {item.year}
                         </span>
+                        <span
+                          className={`overflow-hidden whitespace-nowrap text-[13px] font-medium text-white/85 transition-all duration-700 ${
+                            on ? "mt-1.5 max-h-6 opacity-100" : "max-h-0 opacity-0"
+                          }`}
+                        >
+                          {item.title}
+                        </span>
                       </span>
-                    </button>
-                  );
-                })}
-              </div>
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </motion.div>
