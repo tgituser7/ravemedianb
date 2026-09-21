@@ -59,8 +59,6 @@ export default function AboutBuildSection() {
       className="relative overflow-hidden px-[6%] pb-24 pt-16"
       style={{
         backgroundColor: "#eae8e2",
-        backgroundImage: "radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px)",
-        backgroundSize: "14px 14px",
       }}
     >
       <div className="mx-auto max-w-6xl">

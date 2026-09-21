@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { CAM_SCALE, CAM_TY, ROW_X } from "@/components/studioWall/camera";
 import {
   Anatomy,
@@ -37,6 +37,18 @@ const ROW_PITCH = 273;
 // Scroll progress spent travelling the camera path; the rest holds on the
 // final frame (the reference sits still for its last few frames).
 const TRAVEL = 0.88;
+
+// The camera never jumps to the scroll position: it eases toward it and its
+// speed is capped, so a hard fling takes the same slow, gliding path as a
+// gentle scroll. MAX_SPEED is progress per second (the cap below is adaptive; the whole wall
+// takes many seconds to cross, however fast you scroll).
+const EASE_RATE = 2.0; // higher = catches up to the scroll sooner
+const MAX_SPEED = 0.16; // ceiling, in progress per second
+// The recorded camera path is far steeper in some stretches (the opening
+// swoop) than others, so a flat progress cap would still feel fast there.
+// This caps the camera's *visible* speed (reference-viewport units per
+// second) instead; the progress cap below is derived from it per segment.
+const MAX_VISIBLE_SPEED = 420;
 
 type WallCard = { x: number; el: ReactNode };
 
@@ -105,6 +117,29 @@ const FRAME_COUNT = CAM_SCALE.length;
 const INPUT = [...Array.from({ length: FRAME_COUNT }, (_, i) => (i / (FRAME_COUNT - 1)) * TRAVEL), 1];
 const withHold = (a: number[]) => [...a, a[a.length - 1]];
 
+// Visible camera travel per unit of progress, per path segment.
+const SEG = TRAVEL / (FRAME_COUNT - 1);
+const SEGMENT_SLOPE = (() => {
+  const out: number[] = [];
+  for (let i = 0; i < FRAME_COUNT - 1; i++) {
+    let d = Math.abs(CAM_TY[i + 1] - CAM_TY[i]);
+    for (const k of Object.keys(ROW_X)) {
+      const row = ROW_X[Number(k)];
+      d = Math.max(d, Math.abs(row[i + 1] - row[i]) * CAM_SCALE[i]);
+    }
+    out.push(Math.max(d, 1) / SEG);
+  }
+  return out;
+})();
+
+// Fastest progress/second the camera may move at around progress `p`
+// (looks one segment ahead so it slows down before a steep stretch).
+function speedCapAt(p: number) {
+  const i = Math.max(0, Math.min(SEGMENT_SLOPE.length - 1, Math.floor(p / SEG)));
+  const slope = Math.max(SEGMENT_SLOPE[i], SEGMENT_SLOPE[Math.min(SEGMENT_SLOPE.length - 1, i + 1)]);
+  return Math.min(MAX_SPEED, MAX_VISIBLE_SPEED / slope);
+}
+
 function Row({ k, cards, progress }: { k: number; cards: WallCard[]; progress: MotionValue<number> }) {
   const x = useTransform(progress, INPUT, withHold(ROW_X[k]));
   return (
@@ -142,8 +177,47 @@ export default function StudioWall() {
 
   const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start start", "end end"] });
 
-  const scale = useTransform(scrollYProgress, INPUT, withHold(CAM_SCALE).map((s) => s * k));
-  const y = useTransform(scrollYProgress, INPUT, withHold(CAM_TY).map((t) => k * (t - offY)));
+  const reduced = useReducedMotion();
+  const glide = useMotionValue(scrollYProgress.get());
+  const raf = useRef<number | null>(null);
+
+  // Runs only while the camera is still catching up to the scroll position.
+  const kick = () => {
+    if (raf.current !== null) return;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      const cur = glide.get();
+      const diff = scrollYProgress.get() - cur;
+      if (Math.abs(diff) < 0.00015) {
+        glide.set(scrollYProgress.get());
+        raf.current = null;
+        return;
+      }
+      const eased = diff * (1 - Math.exp(-EASE_RATE * dt));
+      const cap = speedCapAt(cur) * dt;
+      glide.set(cur + Math.max(-cap, Math.min(cap, eased)));
+      raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+  };
+
+  useMotionValueEvent(scrollYProgress, "change", () => {
+    if (reduced) glide.set(scrollYProgress.get());
+    else kick();
+  });
+
+  useEffect(() => {
+    return () => {
+      if (raf.current !== null) cancelAnimationFrame(raf.current);
+    };
+  }, []);
+
+  const progress = glide;
+
+  const scale = useTransform(progress, INPUT, withHold(CAM_SCALE).map((s) => s * k));
+  const y = useTransform(progress, INPUT, withHold(CAM_TY).map((t) => k * (t - offY)));
 
   return (
     <section ref={wrapRef} aria-label="Brand guidelines wall" className="relative bg-black" style={{ height: "400vh" }}>
@@ -153,7 +227,7 @@ export default function StudioWall() {
           style={{ x: -k * offX, y, scale, originX: 0, originY: 0, position: "absolute", left: 0, top: 0, width: 0, height: 0, willChange: "transform" }}
         >
           {ROWS.map((r) => (
-            <Row key={r.k} k={r.k} cards={r.cards} progress={scrollYProgress} />
+            <Row key={r.k} k={r.k} cards={r.cards} progress={progress} />
           ))}
         </motion.div>
       </div>

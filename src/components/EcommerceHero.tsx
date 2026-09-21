@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import PlaceholderImage from "./PlaceholderImage";
@@ -60,6 +60,31 @@ export default function EcommerceHero() {
     offset: ["start end", "end start"],
   });
   const stackX = useTransform(scrollYProgress, [0, 1], [24, -24]);
+
+  // The card stack is laid out on a fixed-size stage (34rem / 45rem wide).
+  // Scale that stage down to fit the column and centre it, so the cards never
+  // run past the screen edge and the space either side stays even.
+  const colRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const [fit, setFit] = useState({ scale: 1, w: 0, h: 0 });
+
+  useLayoutEffect(() => {
+    const col = colRef.current;
+    const stage = stageRef.current;
+    if (!col || !stage) return;
+    const measure = () => {
+      const w = stage.offsetWidth;
+      const h = stage.offsetHeight;
+      // leave even breathing room each side (room for the arrows on the right)
+      const pad = col.clientWidth >= 560 ? 80 : 16;
+      const scale = Math.min(1, (col.clientWidth - pad) / w);
+      setFit((p) => (p.scale === scale && p.w === w && p.h === h ? p : { scale, w, h }));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(col);
+    return () => ro.disconnect();
+  }, []);
 
   return (
     <section ref={sectionRef} className="overflow-hidden px-6 py-16 lg:py-24">
@@ -122,7 +147,7 @@ export default function EcommerceHero() {
           </motion.div>
         </div>
 
-        <div className="relative">
+        <div ref={colRef} className="relative">
           <motion.div
             {...fadeUpInView(STACK_BASE_DELAY + 0.4, 10, 0.5)}
             className="absolute right-0 top-0 z-50 hidden flex-col gap-2 sm:flex"
@@ -141,6 +166,15 @@ export default function EcommerceHero() {
             </button>
           </motion.div>
 
+          <div
+            className="mx-auto"
+            style={fit.w ? { width: fit.w * fit.scale, height: fit.h * fit.scale } : undefined}
+          >
+          <div
+            ref={stageRef}
+            className="relative h-72 w-[34rem] sm:h-80 sm:w-[45rem]"
+            style={{ transform: `scale(${fit.scale})`, transformOrigin: "top left" }}
+          >
           <motion.div
             initial={{ opacity: 0, scale: 0.85, y: 10 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -160,7 +194,7 @@ export default function EcommerceHero() {
             @robin
           </motion.div>
 
-          <motion.div style={{ x: stackX }} className="relative h-72 w-full sm:h-80">
+          <motion.div style={{ x: stackX }} className="relative h-full w-full">
             {STACK.map((card, i) => (
               <PlaceholderImage
                 key={card.label}
@@ -180,6 +214,8 @@ export default function EcommerceHero() {
               />
             ))}
           </motion.div>
+          </div>
+          </div>
         </div>
       </div>
     </section>

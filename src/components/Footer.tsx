@@ -4,10 +4,18 @@ import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import { fadeUpInView } from "@/lib/motion";
 
-function TwitterIcon() {
+function XIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23 4.5c-.8.36-1.66.6-2.56.71a4.48 4.48 0 0 0 1.96-2.48 8.94 8.94 0 0 1-2.83 1.08 4.45 4.45 0 0 0-7.58 4.06A12.63 12.63 0 0 1 2.9 3.15a4.44 4.44 0 0 0 1.38 5.94 4.4 4.4 0 0 1-2.01-.56v.06a4.45 4.45 0 0 0 3.57 4.36 4.46 4.46 0 0 1-2 .08 4.46 4.46 0 0 0 4.16 3.09A8.93 8.93 0 0 1 1 18.07a12.6 12.6 0 0 0 6.84 2c8.2 0 12.7-6.8 12.7-12.7l-.01-.58A9.1 9.1 0 0 0 23 4.5Z" />
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function YoutubeIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.95 1.97C5.12 19.5 12 19.5 12 19.5s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.97 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33ZM9.75 15.02V8.48l5.75 3.27-5.75 3.27Z" />
     </svg>
   );
 }
@@ -22,21 +30,10 @@ function InstagramIcon() {
   );
 }
 
-function DribbbleIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <circle cx="12" cy="12" r="9.5" />
-      <path d="M2.9 8.7c4.6 1.4 10 1.2 14.7-.7M6.2 20.3c2.3-6.2 6-11 11.3-14.4M4 12.5c6.3-.6 12.4.9 16.7 4.6" />
-    </svg>
-  );
-}
-
 const PLATFORM_LINKS = [
   { label: "About", href: "/about" },
-  { label: "Divisions" },
   { label: "News" },
   { label: "Careers" },
-  { label: "Team" },
 ];
 
 const STORY_LINKS = [
@@ -101,7 +98,11 @@ function FooterLinkList({
 }
 
 export default function Footer() {
-  const socialIcons = [TwitterIcon, InstagramIcon, DribbbleIcon];
+  const socialIcons = [
+    { Icon: InstagramIcon, label: "Instagram", href: "#" },
+    { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@RaveNetworkIndustries" },
+    { Icon: XIcon, label: "X", href: "#" },
+  ];
 
   return (
     <motion.footer {...fadeUpInView(0, 25, 0.7)} className="px-6 pb-10 pt-4">
@@ -118,21 +119,18 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 flex items-center gap-3">
-              {socialIcons.map((Icon, i) => (
-                <button
-                  key={i}
-                  aria-label="Social link"
+              {socialIcons.map(({ Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  aria-label={label}
                   className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-zinc-700 transition-colors hover:text-zinc-900"
                 >
                   <Icon />
-                </button>
+                </a>
               ))}
-              <button
-                aria-label="Behance"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold italic text-zinc-700 transition-colors hover:text-zinc-900"
-              >
-                Bē
-              </button>
             </div>
           </div>
 

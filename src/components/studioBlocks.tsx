@@ -10,7 +10,7 @@ export default function ProjectMosaic() {
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
-  // The /res media isn't in the repo yet, so a missing file falls back to an
+  // Media lives in /public. If a file is ever missing it falls back to an
   // approved site image (poster for videos, swapped src for images).
   const fallbackFor = (src: string) => imageAt(Array.from(src).reduce((a, c) => a + c.charCodeAt(0), 0));
 
@@ -20,9 +20,11 @@ export default function ProjectMosaic() {
     loop: true,
     playsInline: true,
     preload: "metadata" as const,
-    poster: fallbackFor(src),
     style: { width: "100%", height: "100%", objectFit: "cover" as const },
     src,
+    onError: (e: SyntheticEvent<HTMLVideoElement>) => {
+      e.currentTarget.poster = fallbackFor(src);
+    },
     onMouseEnter: (e: MouseEvent<HTMLVideoElement>) => void e.currentTarget.play().catch(() => {}),
     onMouseLeave: (e: MouseEvent<HTMLVideoElement>) => e.currentTarget.pause(),
     onClick: () => setVideoSrc(src),
@@ -78,76 +80,76 @@ export default function ProjectMosaic() {
               <span style={col({ width: "30%", height: "100%", flexDirection: "column" })}>
                 <span className="sectors-images sectors-accent-yellow" style={{ width: "100%", height: "44%" }}></span>
                 <span className="sectors-images ad-video-play" style={{ width: "100%", height: "56%" }}>
-                  <video {...videoProps("/res/Nerolac (1).mov")}></video>
+                  <video {...videoProps("/Nerolac (1).mov")}></video>
                 </span>
               </span>
               <span className="sectors-images" style={{ width: "26%", height: "100%" }}>
-                <img {...imgProps("/res/P2.JPG")} />
+                <img {...imgProps("/P2.JPG")} />
               </span>
               <span className="sectors-images" style={{ width: "44%", height: "100%" }}>
-                <video {...videoProps("/res/Saino.mov")}></video>
+                <video {...videoProps("/Saino.mov")}></video>
               </span>
             </span>
             <span style={col({ width: "100%", height: "40%" })}>
               <span style={col({ width: "70%", height: "100%", flexDirection: "column" })}>
                 <span style={col({ width: "100%", height: "50%" })}>
                   <span className="sectors-images" style={{ width: "59%", height: "100%" }}>
-                    <video {...videoProps("/res/Patanjali.mov")}></video>
+                    <video {...videoProps("/Patanjali.mov")}></video>
                   </span>
                   <span className="sectors-images" style={{ width: "41%", height: "100%" }}>
-                    <img {...imgProps("/res/P1.JPG")} />
+                    <img {...imgProps("/P1.JPG")} />
                   </span>
                 </span>
                 <span style={col({ width: "100%", height: "50%" })}>
                   <span className="sectors-images" style={{ width: "21%", height: "100%" }}>
-                    <img {...imgProps("/res/IMG_8525.JPG")} />
+                    <img {...imgProps("/IMG_8525.JPG")} />
                   </span>
                   <span className="sectors-images" style={{ width: "79%", height: "100%" }}>
-                    <video {...videoProps("/res/Laxman Rekha.mov")}></video>
+                    <video {...videoProps("/Laxman Rekha.mov")}></video>
                   </span>
                 </span>
               </span>
               <span style={col({ width: "30%", height: "100%", flexDirection: "column" })}>
                 <span className="sectors-images" style={{ width: "100%", height: "28%" }}>
-                  <video {...videoProps("/res/Woodland.mov")}></video>
+                  <video {...videoProps("/Woodland.mov")}></video>
                 </span>
                 <span className="sectors-images" style={{ width: "100%", height: "36%" }}>
-                  <video {...videoProps("/res/Sony Vaio (1).mov")}></video>
+                  <video {...videoProps("/Sony Vaio (1).mov")}></video>
                 </span>
                 <span className="sectors-images" style={{ width: "100%", height: "36%" }}>
-                  <img {...imgProps("/res/art work.jpg")} />
+                  <img {...imgProps("/art work.jpg")} />
                 </span>
               </span>
             </span>
             <span style={col({ width: "100%", height: "20%" })}>
               <span className="sectors-images" style={{ width: "55%", height: "100%" }}>
-                <video {...videoProps("/res/Road Safety.mov")}></video>
+                <video {...videoProps("/Road Safety.mov")}></video>
               </span>
               <span style={col({ width: "45%", height: "100%" })}>
                 <span style={col({ width: "67%", height: "100%", flexDirection: "column" })}>
                   <span className="sectors-images" style={col({ width: "100%", height: "64%" })}>
-                    <video {...videoProps("/res/DOMs Stationary (1).mov")}></video>
+                    <video {...videoProps("/DOMs Stationary (1).mov")}></video>
                   </span>
                   <span className="sectors-images" style={col({ width: "45%", height: "36%" })}>
-                    <img {...imgProps("/res/3.JPG")} />
+                    <img {...imgProps("/3.JPG")} />
                   </span>
                 </span>
                 <span className="sectors-images" style={{ width: "33%", height: "100%" }}>
-                  <img {...imgProps("/res/1.JPG")} />
+                  <img {...imgProps("/1.JPG")} />
                 </span>
               </span>
             </span>
             <span style={col({ width: "100%", height: "17%" })}>
               <span className="sectors-images" style={{ width: "35%", height: "100%" }}>
-                <video {...videoProps("/res/Ajay Toothpaste.mov")}></video>
+                <video {...videoProps("/Ajay Toothpaste.mov")}></video>
               </span>
               <span className="sectors-images" style={{ width: "41%", height: "100%" }}>
-                <video {...videoProps("/res/Beti Bachao.mov")}></video>
+                <video {...videoProps("/Beti Bachao.mov")}></video>
               </span>
               <span style={col({ width: "24%", height: "100%", flexDirection: "column" })}>
                 <span style={col({ width: "100%", height: "50%" })}>
                   <span className="sectors-images" style={{ width: "100%", height: "100%" }}>
-                    <video {...videoProps("/res/Bahubali Elaichi (1).mov")}></video>
+                    <video {...videoProps("/Navneet Youva (1).mov")}></video>
                   </span>
                 </span>
                 <span className="sectors-images sectors-accent-black" style={{ width: "100%", height: "50%" }}></span>

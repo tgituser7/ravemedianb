@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import AboutHero from "@/components/AboutHero";
 import AboutBuildSection from "@/components/AboutBuildSection";
+import AboutTimeline from "@/components/AboutTimeline";
 import Footer from "@/components/Footer";
 
 export default function AboutPage() {
@@ -10,6 +11,7 @@ export default function AboutPage() {
         <Navbar/>
         <AboutHero />
         <AboutBuildSection />
+        <AboutTimeline />
       </main>
       <Footer />
     </div>

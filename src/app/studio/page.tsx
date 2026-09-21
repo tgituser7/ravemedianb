@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import StudioGrids from "@/components/StudioGrids";
 import StudioWall from "@/components/StudioWall";
 import StudioBlocks from "@/components/studioBlocks";
+import StudioSwiper from "@/components/StudioSwiper";
 import Footer from "@/components/Footer";
 
 export default function StudioPage() {
@@ -12,6 +13,7 @@ export default function StudioPage() {
         <StudioGrids />
         <StudioWall />
         <StudioBlocks />
+        <StudioSwiper />
       </main>
       <Footer />
     </div>
