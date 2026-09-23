@@ -215,7 +215,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: entranceDelay + iconsDelay, ease: EASE_OUT }}
-          className="flex shrink-0 items-center gap-5"
+          className="ml-auto flex shrink-0 items-center gap-5"
         >
           <div className="hidden items-center gap-5 md:flex">
             {SOCIAL_ICONS.map(({ Icon, label, href }) => (
