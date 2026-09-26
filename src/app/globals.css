@@ -759,7 +759,9 @@ a {
   position: relative;
   width: calc(100% - 120px);
   max-width: 1380px;
-  min-height: 700px;
+  /* Fill the screen right under the navbar on first load, never shorter
+     than the design needs. */
+  min-height: max(560px, calc(100vh - 81px));
 
   margin: 0 auto;
 
@@ -977,9 +979,11 @@ a {
   z-index: 10;
 
   width: 610px;
-  height: 350px;
+  /* Hug the heading text instead of a fixed height, so there's no dead
+     cream space between the text and the purple graphic below it. */
+  height: auto;
 
-  padding: 30px 40px;
+  padding: 30px 40px 34px;
 
   border-bottom-right-radius: 32px;
 
@@ -1256,12 +1260,12 @@ a {
 @media (max-width: 900px) {
   .hero-section {
     width: calc(100% - 40px);
-    min-height: 600px;
+    min-height: max(520px, calc(100vh - 81px));
   }
 
   .hero-heading-box {
     width: 55%;
-    height: 280px;
+    height: auto;
 
     padding-left: 25px;
   }
@@ -1275,7 +1279,7 @@ a {
 @media (max-width: 640px) {
   .hero-section {
     width: calc(100% - 24px);
-    min-height: 650px;
+    min-height: max(560px, calc(100svh - 76px));
 
     border-radius: 6px;
   }
@@ -1293,9 +1297,9 @@ a {
     top: 64px;
 
     width: 85%;
-    height: 235px;
+    height: auto;
 
-    padding: 25px;
+    padding: 25px 25px 30px;
   }
 
   .hero-heading-box h1 {

@@ -56,7 +56,7 @@ function StackPanel({
 export default function AboutBuildSection() {
   return (
     <section
-      className="relative overflow-hidden px-[6%] pb-24 pt-16"
+      className="relative overflow-hidden px-[6%] pb-16 pt-16"
       style={{
         backgroundColor: "#eae8e2",
       }}

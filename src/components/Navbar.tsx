@@ -50,7 +50,7 @@ const LINKS_START = 0.25;
 // property is interpolated from one 0..1 progress value (scroll position,
 // smoothed by a spring), so a slow scroll eases it gradually and a fast
 // scroll glides instead of snapping.
-const MORPH_RANGE = 100; // px of scroll over which the bar fully condenses
+const MORPH_RANGE = 60; // px of scroll over which the bar fully condenses
 const FULL_MAX_WIDTH = 1600;
 const CAPSULE_GAP = 32; // 2rem between nav links and the icons group
 const CAPSULE_PAD_X = 24;
@@ -86,7 +86,7 @@ export default function Navbar({
 
   const { scrollY } = useScroll();
   const raw = useTransform(scrollY, [0, MORPH_RANGE], [0, 1]);
-  const smooth = useSpring(raw, { stiffness: 300, damping: 34, mass: 0.6, restDelta: 0.0005 });
+  const smooth = useSpring(raw, { stiffness: 420, damping: 38, mass: 0.5, restDelta: 0.0005 });
   const p = reduced ? raw : smooth;
 
   // Real pixel widths (auto <-> 100% can't be interpolated, which is what made

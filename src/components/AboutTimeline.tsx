@@ -72,7 +72,7 @@ export default function AboutTimeline() {
     <section
       ref={sectionRef}
       aria-label="Our timeline"
-      className="relative overflow-hidden px-[6%] pb-28 pt-20"
+      className="relative overflow-hidden px-[6%] pb-16 pt-16"
       style={{
         backgroundColor: "#eae8e2",
       }}
