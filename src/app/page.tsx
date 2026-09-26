@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <SplashScreen />
-      <Navbar entranceDelay={SPLASH_DURATION_MS / 1000} />
+      <Navbar entranceDelay={SPLASH_DURATION_MS / 1000} spacerBg="#050505" />
       <main className="flex-1">
         <HomeTop/>
         <ServicesShowcase />

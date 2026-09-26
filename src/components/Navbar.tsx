@@ -50,12 +50,20 @@ const LINKS_START = 0.25;
 // property is interpolated from one 0..1 progress value (scroll position,
 // smoothed by a spring), so a slow scroll eases it gradually and a fast
 // scroll glides instead of snapping.
-const MORPH_RANGE = 140; // px of scroll over which the bar fully condenses
+const MORPH_RANGE = 100; // px of scroll over which the bar fully condenses
 const FULL_MAX_WIDTH = 1600;
 const CAPSULE_GAP = 32; // 2rem between nav links and the icons group
 const CAPSULE_PAD_X = 24;
 
-export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }) {
+export default function Navbar({
+  entranceDelay = 0,
+  spacerBg,
+}: {
+  entranceDelay?: number;
+  // Colour of the strip reserved for the bar (visible beside the capsule
+  // once it condenses); pages whose first section is dark pass its colour.
+  spacerBg?: string;
+}) {
   const [open, setOpen] = useState(false);
   const iconsDelay = LINKS_START + NAV_LINKS.length * LINK_STAGGER + 0.1;
 
@@ -78,7 +86,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
 
   const { scrollY } = useScroll();
   const raw = useTransform(scrollY, [0, MORPH_RANGE], [0, 1]);
-  const smooth = useSpring(raw, { stiffness: 170, damping: 30, mass: 0.6, restDelta: 0.0005 });
+  const smooth = useSpring(raw, { stiffness: 300, damping: 34, mass: 0.6, restDelta: 0.0005 });
   const p = reduced ? raw : smooth;
 
   // Real pixel widths (auto <-> 100% can't be interpolated, which is what made
@@ -91,6 +99,8 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
   const padY = useTransform(p, [0, 1], [20, 10]);
   const radius = useTransform(p, [0, 1], [0, 34]);
   const dropRadius = useTransform(p, [0, 1], [0, 24]);
+  // Long bar: logo sits a bit further left; eases back to its slot as it condenses.
+  const logoX = useTransform(p, [0, 1], [-20, 0]);
   const shadow = useTransform(p, (v) => `0 10px 30px -5px rgba(0,0,0,${(0.18 * v).toFixed(3)})`);
 
   useLayoutEffect(() => {
@@ -167,6 +177,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: entranceDelay, ease: EASE_OUT }}
+          style={{ x: logoX }}
           className="flex w-[80px] shrink-0 items-center justify-end pr-0"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -301,7 +312,7 @@ export default function Navbar({ entranceDelay = 0 }: { entranceDelay?: number }
         </motion.nav>
       ) : null}
     </header>
-    <div style={{ height: spacer }} aria-hidden />
+    <div style={{ height: spacer, background: spacerBg }} aria-hidden />
     </>
   );
 }
