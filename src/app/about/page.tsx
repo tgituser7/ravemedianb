@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import AboutHero from "@/components/AboutHero";
+import AboutHierarchy from "@/components/AboutHierarchy";
 import AboutBuildSection from "@/components/AboutBuildSection";
 import AboutTimeline from "@/components/AboutTimeline";
 import Footer from "@/components/Footer";
@@ -10,6 +11,7 @@ export default function AboutPage() {
       <main className="flex-1">
         <Navbar/>
         <AboutHero />
+        <AboutHierarchy />
         <AboutBuildSection />
         <AboutTimeline />
       </main>
