@@ -37,7 +37,7 @@ const PLATFORM_LINKS = [
 ];
 
 const STORY_LINKS = [
-  { label: "Your Story" },
+  { label: "Resources", href: "/resources" },
   { label: "Create Story", icon: true },
   { label: "Sell fast", badge: { text: "Soon", tone: "soon" as const } },
 ];

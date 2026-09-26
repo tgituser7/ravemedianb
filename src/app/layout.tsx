@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter, Figtree } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Figtree, Roboto } from "next/font/google";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -10,6 +10,7 @@ const jakarta = Plus_Jakarta_Sans({
 // Used by the Studio brand-wall section (slide body copy + geometric specimen).
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const figtree = Figtree({ variable: "--font-figtree", subsets: ["latin"] });
+const roboto = Roboto({ variable: "--font-roboto", subsets: ["latin"], weight: ["700"] });
 
 export const metadata: Metadata = {
   title: "Rave",
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${inter.variable} ${figtree.variable} h-full antialiased`}>
+    <html lang="en" className={`${jakarta.variable} ${inter.variable} ${figtree.variable} ${roboto.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white text-zinc-900">
         {children}
       </body>
