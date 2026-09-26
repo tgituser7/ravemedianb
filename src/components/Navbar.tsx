@@ -32,7 +32,7 @@ function XIcon({ size = 16 }: { size?: number }) {
 }
 
 const NAV_LINKS = [
-  { label: "Project", href: "/project", badge: false },
+  { label: "Production", href: "/production", badge: false },
   { label: "Network", href: "/network", badge: false },
   { label: "Studio", href: "/studio", badge: false },
 ];

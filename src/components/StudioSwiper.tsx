@@ -4,11 +4,15 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { RESOURCES } from "@/data/resources";
 
+const AUTOPLAY_MS = 3500;
+
 export default function StudioSwiper() {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [onScreen, setOnScreen] = useState(false);
+  const [tick, setTick] = useState(0);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -58,6 +62,18 @@ export default function StudioSwiper() {
     return () => observer.disconnect();
   }, []);
 
+  // Track whether the section is currently on screen (unlike `visible`,
+  // which is a one-time entrance flag) so autoplay only runs when seen.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return undefined;
+    const observer = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), {
+      threshold: 0.3,
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const scrollToIndex = (i: number) => {
     const track = trackRef.current;
     const child = track?.children[i] as HTMLElement | undefined;
@@ -65,6 +81,22 @@ export default function StudioSwiper() {
     const target = child.offsetLeft - (track.clientWidth - child.offsetWidth) / 2;
     track.scrollTo({ left: target, behavior: "smooth" });
   };
+
+  // Auto-rotate: glide to the next card every few seconds, looping back to
+  // the first. `active` is a dependency, so any manual pick (arrows, dots,
+  // swiping) restarts the countdown.
+  useEffect(() => {
+    if (!onScreen) return undefined;
+    const id = window.setTimeout(() => {
+      // The last cards can never reach the centre, so `active` may stall
+      // before the final index: treat "scrolled to the end" as the last stop.
+      const track = trackRef.current;
+      const atEnd = !!track && track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      scrollToIndex(atEnd || active >= RESOURCES.length - 1 ? 0 : active + 1);
+      setTick((t) => t + 1); // re-arm even if `active` did not change
+    }, AUTOPLAY_MS);
+    return () => window.clearTimeout(id);
+  }, [active, onScreen, tick]);
 
   const goPrev = () => scrollToIndex(Math.max(0, active - 1));
   const goNext = () => scrollToIndex(Math.min(RESOURCES.length - 1, active + 1));

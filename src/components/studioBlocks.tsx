@@ -139,7 +139,7 @@ export default function ProjectMosaic() {
                 </span>
               </span>
             </span>
-            <span style={col({ width: "100%", height: "17%" })}>
+            <span style={col({ width: "100%", height: "20%" })}>
               <span className="sectors-images" style={{ width: "35%", height: "100%" }}>
                 <video {...videoProps("/Ajay Toothpaste.mov")}></video>
               </span>

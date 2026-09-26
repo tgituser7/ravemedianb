@@ -1339,7 +1339,7 @@ a {
 /* Studio mosaic (third section on /studio) */
 .project_mosaic {
   background: #fff;
-  padding: 24px 0 64px;
+  padding: 64px 0;
 }
 .project_vspan {
   display: flex;

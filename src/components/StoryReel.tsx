@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 
 // Section 6 — a story/video reel slider: a numbered index with a
 // grayscale video thumbnail, an "ABOUT" blurb and "TAGS" row on the left,
@@ -50,14 +50,28 @@ const SLIDES = [
 
 const YEAR = "2025";
 const TICKER_WORDS = ["RAVE", "GET STARTED"];
+const AUTOPLAY_MS = 4500;
 
 export default function StoryReel() {
   const [active, setActive] = useState(2);
   const slide = SLIDES[active];
   const next = () => setActive((i) => (i + 1) % SLIDES.length);
 
+  // Auto-advance while the section is on screen. `active` is a dependency,
+  // so any manual pick restarts the countdown.
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef);
+  useEffect(() => {
+    if (!inView) return;
+    const id = window.setTimeout(() => setActive((i) => (i + 1) % SLIDES.length), AUTOPLAY_MS);
+    return () => window.clearTimeout(id);
+  }, [active, inView]);
+
   return (
-    <section className="relative overflow-hidden bg-zinc-950 px-[6%] pb-28 pt-24 text-white">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden bg-zinc-950 px-[6%] pb-28 pt-24 text-white"
+    >
       <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2">
         {/* Left: index, thumbnail, about, tags */}
         <div>
@@ -159,28 +173,22 @@ export default function StoryReel() {
         </div>
       </div>
 
-      {/* Continuous marquee ticker */}
+      {/* Continuous marquee ticker: two identical halves, each wider than
+          the screen, sliding exactly -50% for a seamless endless loop. */}
       <div className="relative mt-24 overflow-hidden border-y border-zinc-800 py-4">
-        <div className="flex w-max animate-[marquee_18s_linear_infinite] gap-10 whitespace-nowrap text-sm font-semibold tracking-wide text-zinc-600">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="flex items-center gap-10">
+        <motion.div
+          className="flex w-max whitespace-nowrap text-sm font-semibold tracking-wide text-zinc-600"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 30, ease: "linear", repeat: Infinity }}
+        >
+          {Array.from({ length: 32 }).map((_, i) => (
+            <span key={i} className="flex items-center gap-10 pr-10">
               <span>{TICKER_WORDS[i % 2]}</span>
               <span className="text-orange-500">|</span>
             </span>
           ))}
-        </div>
+        </motion.div>
       </div>
-
-      <style jsx>{`
-        @keyframes marquee {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </section>
   );
 }

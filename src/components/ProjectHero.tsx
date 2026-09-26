@@ -18,7 +18,7 @@ export default function ProjectHero() {
         <div />
       </div>
 
-      <div className="relative mx-auto flex min-h-[80vh] max-w-[1600px] flex-col justify-center px-[6%] pb-40 pt-32">
+      <div className="relative mx-auto flex min-h-[80vh] max-w-[1600px] flex-col justify-center px-[6%] pb-48 pt-40">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Text column */}
           <div>

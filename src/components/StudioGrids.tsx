@@ -128,7 +128,7 @@ function BarcodeRail() {
 
 export default function StudioGrids() {
   return (
-    <section className="relative flex h-[calc(100vh-92px)] min-h-[560px] flex-col overflow-hidden bg-white px-6 text-neutral-900 sm:px-10 md:pl-[150px] md:pr-16">
+    <section className="relative mb-16 flex h-[calc(100vh-92px)] min-h-[560px] flex-col overflow-hidden bg-white px-6 text-neutral-900 sm:px-10 md:pl-[150px] md:pr-16">
       <BarcodeRail />
       <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col pt-6 sm:pt-8">
         {/* Title block: "STUDIO" top-left, with a thumbnail on the right
