@@ -246,10 +246,10 @@ export default function Navbar({
           <span className={`hidden h-6 w-px md:block ${dividerColor}`} />
 
           <a
-            href="/network"
+            href="/contact"
             className="hidden rounded-full bg-orange-500 px-6 py-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-orange-400 sm:inline-block"
           >
-            Get Started
+            Contact
           </a>
 
           <button
@@ -303,11 +303,11 @@ export default function Navbar({
             ))}
           </div>
           <a
-            href="/network"
+            href="/contact"
             onClick={() => setOpen(false)}
             className="mt-4 inline-block rounded-full bg-orange-500 px-5 py-2.5 text-center text-[13px] font-semibold text-white transition-colors hover:bg-orange-400"
           >
-            Get Started
+            Contact
           </a>
         </motion.nav>
       ) : null}

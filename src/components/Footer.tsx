@@ -32,7 +32,7 @@ function InstagramIcon() {
 
 const PLATFORM_LINKS = [
   { label: "About", href: "/about" },
-  { label: "News" },
+  { label: "News", href: "/news" },
   { label: "Careers" },
 ];
 
@@ -44,7 +44,7 @@ const STORY_LINKS = [
 
 const LEGAL_LINKS = [
   { label: "Privacy & Policy" },
-  { label: "Contact Us" },
+  { label: "Contact Us", href: "/contact" },
   { label: "Api", badge: { text: "New", tone: "outline" as const } },
 ];
 
