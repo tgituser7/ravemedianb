@@ -53,7 +53,7 @@ export const NEWS: NewsItem[] = [
     slug: "outstanding-production-design-award",
     category: "Awards",
     date: "Jul 30, 2026",
-    title: "Rave recognized for outstanding production design",
+    title: "Rave recognized for outstanding design",
     excerpt:
       "The studio picked up its latest industry honour at this year's ceremony, recognizing the design and production team behind a run of recent campaigns.",
     image: "/ravibhaia award.jpg",
