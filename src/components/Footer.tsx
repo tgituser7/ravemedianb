@@ -33,7 +33,7 @@ function InstagramIcon() {
 const PLATFORM_LINKS = [
   { label: "About", href: "/about" },
   { label: "News", href: "/news" },
-  { label: "Careers" },
+  { label: "Careers", href: "/careers" },
 ];
 
 const STORY_LINKS = [
