@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { fadeUpInView } from "@/lib/motion";
 import { CLIENT_LOGOS } from "@/data/clientLogos";
@@ -24,16 +25,27 @@ export default function ClientLogos({
 
         <motion.div
           {...fadeUpInView(0.1, 20, 0.7)}
-          className="mt-20 flex flex-wrap items-center justify-center gap-x-14 gap-y-12 sm:gap-x-20"
+          className="mt-20 flex flex-wrap items-center justify-center gap-x-9 gap-y-9 sm:gap-x-12"
         >
           {CLIENT_LOGOS.map((logo, i) => (
+            // Height-only clamp (not a fixed box) so a wide wordmark isn't
+            // squashed short, on top of a per-logo `scale` (see the data
+            // file) for the few marks that are bolder or more solid-filled
+            // than the rest and would otherwise still look bigger even at
+            // the same height.
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               key={logo.src}
               src={`/${logo.src}`}
               alt=""
-              className="h-10 w-auto object-contain grayscale transition-all duration-300 hover:grayscale-0 sm:h-14"
-              style={{ transitionDelay: `${Math.min(i, 12) * 15}ms` }}
+              className="h-[var(--lh)] w-auto object-contain grayscale transition-all duration-300 hover:grayscale-0 sm:h-[var(--lh-sm)]"
+              style={
+                {
+                  "--lh": `${28 * logo.scale}px`,
+                  "--lh-sm": `${34 * logo.scale}px`,
+                  transitionDelay: `${Math.min(i, 12) * 15}ms`,
+                } as CSSProperties
+              }
             />
           ))}
         </motion.div>

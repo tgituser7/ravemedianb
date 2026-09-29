@@ -104,14 +104,14 @@ export default function AboutBuildSection() {
 
         <motion.div {...fadeUpInView(0.26)} className="mt-10 flex items-center gap-3">
           <a
-            href="/network"
+            href="/distribution"
             className="rounded-full px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
             style={{ background: "#ff4b08" }}
           >
             Start A Project
           </a>
           <a
-            href="/network"
+            href="/distribution"
             className="rounded-full border border-zinc-900/50 px-6 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-900 hover:text-white"
           >
             Book A Call

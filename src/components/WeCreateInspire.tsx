@@ -15,6 +15,12 @@ import { fadeUpInView } from "@/lib/motion";
 // photo has slack to stay legible while pinned, `backgroundBlendMode:
 // luminosity` tints it with the background-color under it, and the drop
 // shadow is the one static touch that isn't scroll-related at all.
+//
+// One gotcha: with `background-attachment: fixed`, a percentage
+// `background-size` is resolved against the viewport, not this card. The
+// source photo is only 1199px wide, so a size like 160% (of a ~1440px+
+// viewport) upscales it well past its native resolution and looks soft.
+// Kept much closer to 100% here so it stays sharp.
 const TINT = "#0a0a0a";
 
 export default function WeCreateInspire() {
@@ -26,7 +32,7 @@ export default function WeCreateInspire() {
           className="absolute inset-0 bg-center"
           style={{
             backgroundImage: "url(/Christies-FI-Hero.jpeg)",
-            backgroundSize: "160%",
+            backgroundSize: "110%",
             backgroundAttachment: "fixed",
             backgroundColor: TINT,
             backgroundBlendMode: "luminosity",

@@ -63,7 +63,7 @@ export default function ManifestoPanel() {
           hero above and half in the black panel, so it reads as a rounded
           bump grown out of the panel's otherwise flat top edge. */}
       <a
-        href="/network"
+        href="/distribution"
         className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-zinc-950 px-8 py-3.5 text-sm font-semibold text-white shadow-xl transition-colors hover:bg-zinc-800"
       >
         GET STARTED
@@ -77,7 +77,7 @@ export default function ManifestoPanel() {
         </motion.div>
         <motion.a
           {...fadeUpInView(0.05)}
-          href="/network"
+          href="/distribution"
           className="rounded-full border border-zinc-700 px-6 py-2.5 text-xs font-semibold tracking-wide text-zinc-300 transition-colors hover:border-zinc-500 hover:text-white"
         >
           ABOUT US

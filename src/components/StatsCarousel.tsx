@@ -36,16 +36,20 @@ export default function StatsCarousel() {
   }, [active, inView]);
 
   return (
-    <section ref={sectionRef} className="border-t border-zinc-900 bg-zinc-950 px-6 py-14 text-white lg:py-16">
+    <section ref={sectionRef} className="border-t border-zinc-100 bg-white px-6 py-14 lg:py-16">
       <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
         <motion.span
           {...fadeUpInView(0, 16, 0.5)}
-          className="text-xs font-semibold uppercase tracking-widest text-zinc-500"
+          className="text-xs font-semibold uppercase tracking-widest text-zinc-400"
         >
           By The Numbers
         </motion.span>
 
-        <div className="relative mt-8 flex h-24 w-full max-w-2xl items-center justify-center overflow-hidden sm:h-28">
+        {/* Not `absolute`: with mode="wait" only one stat is ever mounted
+            at a time, so normal flow is enough — and it's what lets a long
+            stat that wraps to two lines lay out and center correctly,
+            instead of overflowing a fixed-height clipped box. */}
+        <div className="mt-8 flex min-h-[6.5rem] w-full max-w-3xl items-center justify-center px-4 sm:min-h-[8.5rem]">
           <AnimatePresence mode="wait" custom={dir} initial={false}>
             <motion.p
               key={active}
@@ -54,7 +58,7 @@ export default function StatsCarousel() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: dir > 0 ? -40 : 40 }}
               transition={{ duration: 0.5, ease: EASE_OUT }}
-              className="absolute text-[clamp(32px,5.5vw,56px)] font-bold tracking-tight"
+              className="text-[clamp(36px,7vw,68px)] font-bold leading-tight tracking-tight text-zinc-900"
             >
               {STATS[active]}
             </motion.p>
@@ -66,7 +70,7 @@ export default function StatsCarousel() {
             type="button"
             aria-label="Previous stat"
             onClick={() => go(active - 1)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-700 text-zinc-400 transition-colors hover:border-zinc-400 hover:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-900/30 bg-white text-zinc-900 transition-all hover:scale-105 hover:bg-zinc-900 hover:text-white"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
@@ -82,7 +86,7 @@ export default function StatsCarousel() {
                 aria-current={i === active}
                 onClick={() => go(i)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  i === active ? "w-6 bg-orange-500" : "w-2 bg-zinc-700 hover:bg-zinc-500"
+                  i === active ? "w-6 bg-orange-500" : "w-2 bg-zinc-300 hover:bg-zinc-400"
                 }`}
               />
             ))}
@@ -92,7 +96,7 @@ export default function StatsCarousel() {
             type="button"
             aria-label="Next stat"
             onClick={() => go(active + 1)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-700 text-zinc-400 transition-colors hover:border-zinc-400 hover:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-900/30 bg-white text-zinc-900 transition-all hover:scale-105 hover:bg-zinc-900 hover:text-white"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />

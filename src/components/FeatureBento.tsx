@@ -128,7 +128,7 @@ export default function FeatureBento() {
 
         {/* CTA card */}
         <Card delay={0.12} className="flex flex-col items-center justify-center bg-orange-500 text-center">
-          <a href="/network" className="flex flex-col items-center gap-4">
+          <a href="/distribution" className="flex flex-col items-center gap-4">
             <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/40 text-xl">
               🌐
             </span>
