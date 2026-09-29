@@ -38,7 +38,7 @@ const NAV_LINKS = [
 ];
 
 const SOCIAL_ICONS = [
-  { Icon: InstagramIcon, label: "Instagram", href: "#" },
+  { Icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/rave.netin/" },
   { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@RaveNetworkIndustries" },
   { Icon: XIcon, label: "X", href: "#" },
 ];
