@@ -24,7 +24,7 @@ export default function ProjectHero() {
           <div>
             <motion.div {...fadeUpInView(0)} className="flex items-center gap-3 text-sm text-zinc-500">
               <span className="h-px w-8 bg-zinc-300" />
-              The Ultimate Chord Machine
+              The Machine
             </motion.div>
 
             <motion.h1
